@@ -1,7 +1,7 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.example.app',
+  appId: 'com.cardgame.app',
   appName: 'card-game-app',
   webDir: 'out',
   bundledWebRuntime: false,
@@ -10,5 +10,6 @@ const config: CapacitorConfig = {
     "cleartext" : true
   }
 };
+
 
 export default config;
