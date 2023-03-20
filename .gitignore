@@ -37,3 +37,6 @@ next-env.d.ts
 
 # capaitor 
 capaitor.config.ts
+
+#local repo
+tags
