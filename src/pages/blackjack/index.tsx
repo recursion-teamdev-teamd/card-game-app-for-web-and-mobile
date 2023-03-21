@@ -1,3 +1,4 @@
+import { BlackjackPage } from '@/components/page/BlackjackPage'
 import Head from 'next/head'
 
 export default function Blackjack() {
@@ -10,7 +11,7 @@ export default function Blackjack() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>
-        <p>Blackjack</p>
+       <BlackjackPage/>
       </div>
     </>
   )

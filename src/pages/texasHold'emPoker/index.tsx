@@ -1,3 +1,4 @@
+import { TexasPokerPage } from '@/components/page/TexasPokerPage'
 import Head from 'next/head'
 
 export default function TexasHoldemPoker() {
@@ -10,7 +11,7 @@ export default function TexasHoldemPoker() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>
-        <p>Texas hold</p>
+       <TexasPokerPage/>
       </div>
     </>
   )

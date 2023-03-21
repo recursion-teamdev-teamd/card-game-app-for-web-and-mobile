@@ -1,3 +1,4 @@
+import { WarPage } from '@/components/page/WarPage'
 import Head from 'next/head'
 
 export default function War() {
@@ -10,7 +11,7 @@ export default function War() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>
-        <p>War</p>
+       <WarPage/>
       </div>
     </>
   )

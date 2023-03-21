@@ -1,3 +1,6 @@
+import { Deck } from "../deck/deck";
+import { VanilaPlayer } from "../player/abstractPlayer";
+import { WarPlayer } from "../player/player";
 import {
   AbstractPokerTable,
   GambleTable,
@@ -5,7 +8,10 @@ import {
   TurnGameTable,
 } from "./abstractTable";
 // ターンの概念が無いゲーム
-export class WarTable extends VanilaTable {}
+export class WarTable extends VanilaTable {
+  deck: Deck; 
+  playerList: WarPlayer[];
+}
 
 export class SpeedTable extends VanilaTable {}
 

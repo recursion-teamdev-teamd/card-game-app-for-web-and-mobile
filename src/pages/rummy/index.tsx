@@ -1,3 +1,4 @@
+import { RummyPage } from '@/components/page/RummyPage'
 import Head from 'next/head'
 
 export default function Rummy() {
@@ -10,7 +11,7 @@ export default function Rummy() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>
-        <p>Rummy</p>
+      <RummyPage/>
       </div>
     </>
   )
