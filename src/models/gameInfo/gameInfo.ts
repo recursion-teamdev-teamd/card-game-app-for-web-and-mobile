@@ -2,27 +2,34 @@
 // 新しいゲームを定義したらgameInfoArrayに定義したゲームを追加する
 
 export interface GameInfo {
-    readonly gameName: string;
-    readonly gameDescriptionUrl: string;
-    readonly playerNum: number;
-    readonly isCardOpen: boolean; // カードが最初の時点で表向きかどうか
-    readonly jokerNum: number;
-    readonly initialHand: number;
-    readonly initialHouseHand: number;
-  };
-  
-  export const gameInfoBlackJack: GameInfo = {
-    gameName: "Blackpjack",
-    gameDescriptionUrl:
-      "https://en.wikipedia.org/wiki/Blackjack#Rules_of_play_at_casinos",
-    playerNum: 3,
-    isCardOpen: true,
-    jokerNum: 0,
-    initialHand: 2,
-    initialHouseHand: 1,
-  };
+  readonly gameName: string;
+  readonly gameDescriptionUrl: string;
+  readonly playerNum: number;
+  readonly isCardOpen: boolean; // カードが最初の時点で表向きかどうか
+  readonly jokerNum: number;
+  readonly initialHand: number;
+  readonly initialHouseHand: number;
+}
+// ブラックジャック
+export const gameInfoBlackJack: GameInfo = {
+  gameName: "Blackjack",
+  gameDescriptionUrl:
+    "https://en.wikipedia.org/wiki/Blackjack#Rules_of_play_at_casinos",
+  playerNum: 3,
+  isCardOpen: true,
+  jokerNum: 0,
+  initialHand: 2,
+  initialHouseHand: 1,
+};
+
+export const gameInfoWar: GameInfo = {
+  gameName: "War",
+  gameDescriptionUrl: "https://en.wikipedia.org/wiki/War_(card_game)",
+  playerNum: 2,
+  isCardOpen: false,
+  jokerNum: 0,
+  initialHand: 26,
+  initialHouseHand: 0,
+};
 //   ゲームの情報を
-  export const gameInfoArray: GameInfo[] = [gameInfoBlackJack];
-
-
-  
+export const gameInfoArray: GameInfo[] = [gameInfoBlackJack, gameInfoWar];

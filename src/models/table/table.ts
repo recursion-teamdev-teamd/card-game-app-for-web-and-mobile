@@ -1,3 +1,6 @@
+import { gameInfoWar, gameInfoBlackJack } from "./../gameInfo/gameInfo";
+import { Deck } from "../deck/deck";
+import { GameInfo } from "../gameInfo/gameInfo";
 import {
   AbstractPokerTable,
   GambleTable,
@@ -5,7 +8,9 @@ import {
   TurnGameTable,
 } from "./abstractTable";
 // ターンの概念が無いゲーム
-export class WarTable extends VanilaTable {}
+export class WarTable extends VanilaTable {
+  gameInfo: GameInfo = gameInfoWar;
+}
 
 export class SpeedTable extends VanilaTable {}
 
@@ -13,7 +18,9 @@ export class SpeedTable extends VanilaTable {}
 export class RummyTable extends TurnGameTable {}
 
 // ターンの概念があり、賭け金を要するゲーム
-export class BlackjackTable extends GambleTable {}
+export class BlackjackTable extends GambleTable {
+  gameInfo: GameInfo = gameInfoBlackJack;
+}
 
 // ポーカー系のゲーム
 export class PokerTable extends AbstractPokerTable {}
