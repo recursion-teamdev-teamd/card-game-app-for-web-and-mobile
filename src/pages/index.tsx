@@ -1,10 +1,12 @@
+import { CardComponent } from "@/components/model/card/CardComponent";
 import { HomePage } from "@/components/page/HomePage";
-import Card from "react-playing-card";
+import { Card } from "@/models/card/card";
 // import { BasicButton } from "@/components/ui/atoms/buttons/BasicButton";
 import Head from "next/head";
 import React from "react";
 
 export default function Home() {
+  const c = new Card("A", "H", true, "/cards/A-H.png");
   return (
     <>
       <Head>
@@ -15,7 +17,7 @@ export default function Home() {
       </Head>
       <div>
         <HomePage />
-        <Card rank="A" suit="S" />
+        <CardComponent card={c} />
       </div>
     </>
   );

@@ -17,6 +17,7 @@ export abstract class VanilaPlayer {
   ) {
     this.setID(id);
     this.setName(name);
+    this.setPlayerType(playerType);
     this.setPlayerStatus(playerStatus);
     this.setHand(hand);
   }
@@ -38,6 +39,9 @@ export abstract class VanilaPlayer {
   }
   protected getPlayerStatus() {
     return this.playerStatus;
+  }
+  protected setPlayerType(playerType: string) {
+    this.playerType = playerType;
   }
 
   protected setHand(hand: Card[]) {

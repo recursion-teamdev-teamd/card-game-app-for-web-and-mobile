@@ -1,17 +1,12 @@
 export class GameResult {
-  private _win: string = "win";
-  private _lose: string = "lose";
-
-  public get win() {
-    return this._win;
-  }
-  public get lose() {
-    return this._lose;
-  }
+  readonly win: string = "win";
+  readonly lose: string = "lose";
 }
+
 export class WarGameResult extends GameResult {
-  private _draw: string = "draw";
-  public get draw(): string {
-    return this._draw;
-  }
+  readonly draw: string = "draw";
+}
+
+export class BlackJackGameResult extends GameResult {
+  readonly push: string = "push";
 }

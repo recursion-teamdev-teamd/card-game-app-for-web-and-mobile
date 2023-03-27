@@ -1,11 +1,11 @@
 export class PlayerStatus {
-  static roundOver: string = "roundOver";
+  readonly roundOver: string = "roundOver";
 }
 
 export class BlackJackPlayerStatus {
-  static bet: string = "bet";
-  static double: string = "double";
-  static hit: string = "hit";
-  static stand: string = "stand";
-  static waiting: string = "waiting";
+  readonly bet: string = "bet";
+  readonly double: string = "double";
+  readonly hit: string = "hit";
+  readonly stand: string = "stand";
+  readonly waiting: string = "waiting";
 }
