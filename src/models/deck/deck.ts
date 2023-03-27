@@ -1,7 +1,6 @@
 import { Card } from "../card/card";
 import { GameInfo } from "../gameInfo/gameInfo";
 
-
 export class Deck {
   public static readonly SUITS = ["S", "H", "D", "C"];
   public static readonly RANKS = [
@@ -35,6 +34,7 @@ export class Deck {
 
     for (let i = 0; i < s; i++) {
       for (let j = 0; j < r; j++) {
+        const imgUrl = "/cards" + Deck.RANKS[j] + "-" + Deck.SUITS[i] + ".png";
         deck.push(
           new Card(
             Deck.RANKS[j] as
@@ -51,7 +51,9 @@ export class Deck {
               | "J"
               | "Q"
               | "K",
-            Deck.SUITS[i] as "H" | "D" | "S" | "C",GameInfo.isCardOpen
+            Deck.SUITS[i] as "H" | "D" | "S" | "C",
+            GameInfo.isCardOpen,
+            imgUrl
           )
         );
       }
@@ -59,11 +61,9 @@ export class Deck {
 
     //add jokers if they`re needed
     for (let i = 0; i < GameInfo.jokerNum; i++) {
-      let joker = new Card("Joker", "Joker",GameInfo.isCardOpen);
+      let joker = new Card("Joker", "Joker", GameInfo.isCardOpen);
       deck.push(joker);
-    };
-
-
+    }
 
     return deck;
   }
@@ -88,7 +88,6 @@ export class Deck {
     }
     return this.cards.pop();
   }
-
 
   public resetDeck() {
     this.cards = Deck.createDeck(this.GameInfo);

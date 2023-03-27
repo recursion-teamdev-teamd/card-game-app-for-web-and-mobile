@@ -1,5 +1,5 @@
 import { HomePage } from "@/components/page/HomePage";
-import { BasicButton } from "@/components/ui/atoms/buttons/BasicButton";
+// import { BasicButton } from "@/components/ui/atoms/buttons/BasicButton";
 import Head from "next/head";
 import React from "react";
 
@@ -12,7 +12,9 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <HomePage />
+      <div>
+        <HomePage />
+      </div>
     </>
   );
 }

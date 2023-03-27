@@ -8,11 +8,29 @@ export abstract class VanilaPlayer {
   abstract playerStatus: string;
   abstract hand: Card[];
 
+  constructor(
+    id: number,
+    name: string,
+    playerType: string,
+    playerStatus: string,
+    hand: Card[]
+  ) {
+    this.setID(id);
+    this.setName(name);
+    this.setPlayerStatus(playerStatus);
+    this.setHand(hand);
+  }
   protected setID(id: number) {
     this.id = id;
   }
   protected getID() {
     return this.id;
+  }
+  protected setName(name: string) {
+    this.name = name;
+  }
+  protected getName() {
+    return this.name;
   }
 
   protected setPlayerStatus(playerStatus: string) {
@@ -27,6 +45,9 @@ export abstract class VanilaPlayer {
   }
   protected getHand() {
     return this.hand;
+  }
+  protected clearHand() {
+    this.setHand([]);
   }
 }
 
@@ -47,6 +68,20 @@ export abstract class GamblePlayer extends VanilaPlayer {
   abstract chips: number;
   abstract bet: number;
 
+  constructor(
+    id: number,
+    name: string,
+    playerType: string,
+    playerStatus: string,
+    hand: Card[],
+    chips: number,
+    bet: number
+  ) {
+    super(id, name, playerType, playerStatus, hand);
+    this.setChips(chips);
+    this.setBet(bet);
+  }
+
   protected getBet() {
     return this.bet;
   }
@@ -60,6 +95,8 @@ export abstract class GamblePlayer extends VanilaPlayer {
   protected setChips(chips: number) {
     this.chips = chips;
   }
+  abstract getHandScore(): number;
+  abstract updateChips(): void;
 }
 // ギャンブルゲームのディーラー
 export abstract class GambleDealer extends VanilaPlayer {}

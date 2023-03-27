@@ -1,4 +1,5 @@
 import { Card } from "@/models/card/card";
+import Image from "next/image";
 import { FC } from "react";
 import {
   BsFillSuitClubFill,
@@ -12,31 +13,23 @@ type Props = {
   card: Card;
 };
 
-let suitHash = {
-  H: <BsFillSuitHeartFill color="#E91C25" />,
-  D: <BsFillSuitDiamondFill color="#E91C25" />,
-  S: <BsFillSuitSpadeFill color="#000000" />,
-  C: <BsFillSuitClubFill color="#000000" />,
-  Joker: <GiClown size="2rem" color="#000000" />,
-};
-
 export const CardComponent: FC<Props> = (props) => {
   const { card } = props;
+  const hiddenImgUrl: string = "/cards/BACK.png";
   return (
     <div className="bg-[#ffffff] rounded-sm text-center p-2">
       {card.isOpen ? (
-        <div
-          className={`${
-            card.suit === "H" || card.suit === "D"
-              ? "text-[#E91C25]"
-              : "text-[#000000]"
-          } space-y-2`}
-        >
-          {suitHash[card.suit]}
-          <p className="font-bold">{card.rank}</p>
+        <div>
+          {" "}
+          <Image
+            src={card.imgUrl}
+            alt="picture"
+            width={300}
+            height={300}
+          />{" "}
         </div>
       ) : (
-        <div className="font-bold text-lg text-[#000000]">?</div>
+        <Image src={hiddenImgUrl} alt="picture" width={500} height={500} />
       )}
     </div>
   );
