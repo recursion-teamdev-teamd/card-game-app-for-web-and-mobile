@@ -1,4 +1,5 @@
 import { HomePage } from "@/components/page/HomePage";
+import Card from "react-playing-card";
 // import { BasicButton } from "@/components/ui/atoms/buttons/BasicButton";
 import Head from "next/head";
 import React from "react";
@@ -14,6 +15,7 @@ export default function Home() {
       </Head>
       <div>
         <HomePage />
+        <Card rank="A" suit="S" />
       </div>
     </>
   );

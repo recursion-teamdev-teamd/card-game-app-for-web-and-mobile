@@ -61,7 +61,12 @@ export class Deck {
 
     //add jokers if they`re needed
     for (let i = 0; i < GameInfo.jokerNum; i++) {
-      let joker = new Card("Joker", "Joker", GameInfo.isCardOpen);
+      let joker = new Card(
+        "Joker",
+        "Joker",
+        GameInfo.isCardOpen,
+        "/cards/JOKER.png"
+      );
       deck.push(joker);
     }
 
