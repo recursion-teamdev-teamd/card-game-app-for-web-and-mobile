@@ -1,4 +1,4 @@
-import Head from 'next/head'
+import Head from "next/head";
 
 export default function Blackjack() {
   return (
@@ -13,5 +13,5 @@ export default function Blackjack() {
         <p>Blackjack</p>
       </div>
     </>
-  )
+  );
 }

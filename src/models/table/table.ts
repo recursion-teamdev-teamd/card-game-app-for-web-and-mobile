@@ -1,6 +1,8 @@
 import { gameInfoWar, gameInfoBlackJack } from "./../gameInfo/gameInfo";
 import { Deck } from "../deck/deck";
 import { GameInfo } from "../gameInfo/gameInfo";
+import { BlackjackPlayer } from "../player/player";
+import { BlackJackPlayerStatus } from "../playerStatus/playerStatus";
 import {
   AbstractPokerTable,
   GambleTable,
@@ -19,7 +21,16 @@ export class RummyTable extends TurnGameTable {}
 
 // ターンの概念があり、賭け金を要するゲーム
 export class BlackjackTable extends GambleTable {
-  gameInfo: GameInfo = gameInfoBlackJack;
+  private _gameInfo: GameInfo = gameInfoBlackJack;
+  private _house: BlackjackPlayer;
+
+  constructor(deck: Deck, players: BlackjackPlayer[]) {
+    super();
+    this.deck = new Deck(this.gameInfo);
+  }
+  public get gameInfo() {
+    return this._gameInfo;
+  }
 }
 
 // ポーカー系のゲーム

@@ -7,22 +7,38 @@ import {
 } from "../player/abstractPlayer";
 
 export abstract class VanilaTable {
-  abstract gameInfo: GameInfo;
-  abstract deck: Deck;
-  abstract players: VanilaPlayer[];
-  abstract gamePhase: string;
+  abstract _gameInfo: GameInfo;
+  abstract _deck: Deck;
+  abstract _players: VanilaPlayer[];
+  abstract _gamePhase: string;
+  abstract _gameResult: string;
+
+  public set deck(deck: Deck) {
+    this._deck = deck;
+  }
+  public set gameResult(gameResult: string) {
+    this._gameResult = gameResult;
+  }
 }
 
 export abstract class TurnGameTable extends VanilaTable {
   protected turnCounter: number = 0;
-
   protected getTurnCounter = () => this.turnCounter;
   protected setTurnCounter = (turnCounter: number) =>
     (this.turnCounter = turnCounter);
+
+  protected inclementTurnCounter(): void {
+    this.setTurnCounter(this.getTurnCounter() + 1);
+  }
+
+  protected onLastPlayer(player: VanilaPlayer): boolean {
+    if (player == this.players[this.players.length - 1]) return true;
+    return false;
+  }
 }
 
 export abstract class GambleTable extends TurnGameTable {
-  abstract betDenominations: number;
+  abstract betDenominations: number[];
   abstract hit: (player: VanilaPlayer) => void;
 }
 
