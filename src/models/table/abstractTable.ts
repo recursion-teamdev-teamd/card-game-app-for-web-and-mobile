@@ -16,6 +16,9 @@ export abstract class VanilaTable {
   public set deck(deck: Deck) {
     this._deck = deck;
   }
+  public set gameResult(gameResult: string) {
+    this._gameResult = gameResult;
+  }
 }
 
 export abstract class TurnGameTable extends VanilaTable {

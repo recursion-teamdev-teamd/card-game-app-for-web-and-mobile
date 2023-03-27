@@ -1,12 +1,12 @@
 export class GameResult {
-  readonly win: string = "win";
-  readonly lose: string = "lose";
+  static readonly win: string = "win";
+  static readonly lose: string = "lose";
 }
 
 export class WarGameResult extends GameResult {
-  readonly draw: string = "draw";
+  static readonly draw: string = "draw";
 }
 
 export class BlackJackGameResult extends GameResult {
-  readonly push: string = "push";
+  static readonly push: string = "push";
 }

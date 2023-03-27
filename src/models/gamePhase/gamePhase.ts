@@ -1,11 +1,11 @@
 export abstract class GamePhase {
-  readonly roundOver: string = "roundOver";
+  static readonly roundOver: string = "roundOver";
 }
 
 export class GambleGamePhase extends GamePhase {
-  readonly betting: string = "betting";
-  readonly acting: string = "acting";
+  static readonly betting: string = "betting";
+  static readonly acting: string = "acting";
 }
 export class ScoreGamePhase extends GamePhase {
-  readonly acting: string = "acting";
+  static readonly acting: string = "acting";
 }

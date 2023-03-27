@@ -1,5 +1,6 @@
 import { Card } from "../card/card";
 import { BlackjackTable } from "../table/table";
+import { BlackJackGameResult } from "../gameResult/gameResult";
 import { BlackJackPlayerStatus } from "../playerStatus/playerStatus";
 import {
   AbstractPokerPlayer,
@@ -55,7 +56,7 @@ export class BlackjackPlayer extends GamblePlayer {
   }
 
   public updateChips(blackjackTable: BlackjackTable): void {
-    if (blackjackTable.gameResult == BlackJackPlayerStatus.prototype) {
+    if (blackjackTable.gameResult == BlackJackGameResult.win) {
     }
     if (this.isBlackJack()) {
       this.setChips(Math.floor(this.getChips() + this.getBet() * 1.5));
