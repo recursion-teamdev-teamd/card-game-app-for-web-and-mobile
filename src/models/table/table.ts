@@ -10,9 +10,7 @@ import {
   TurnGameTable,
 } from "./abstractTable";
 // ターンの概念が無いゲーム
-export class WarTable extends VanilaTable {
-  gameInfo: GameInfo = gameInfoWar;
-}
+export class WarTable extends VanilaTable {}
 
 export class SpeedTable extends VanilaTable {}
 

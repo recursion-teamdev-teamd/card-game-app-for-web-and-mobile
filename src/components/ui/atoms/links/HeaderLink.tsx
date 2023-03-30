@@ -18,8 +18,7 @@ type Props = {
 //     ["gray","bg-[#EBF0F5]"]
 //   ]);
 
-const baseStyle =
-  "text-center rounded-md font-bold transition hover:duration-500 hover:opacity-50";
+const baseStyle = "text-center transition hover:duration-500 hover:opacity-50";
 
 export const HeaderLink: FC<Props> = (props) => {
   const { href, mainText, subText, mediaQueries } = props;

@@ -17,7 +17,6 @@ export default function Home() {
       </Head>
       <div>
         <HomePage />
-        <CardComponent card={c} />
       </div>
     </>
   );
