@@ -1,6 +1,45 @@
 import Head from "next/head";
+import { BlackJackPlayerType } from "@/models/playerType/playerType";
+import { BlackJackPlayerStatus } from "@/models/playerStatus/playerStatus";
+import { BlackJackBetPage } from "./components/BlackJackBetPage";
+import { BlackJackGamePage } from "./components/BlackJackGamePage";
+import { BlackjackPlayer } from "@/models/player/player";
+
+import { useState } from "react";
+import { BlackjackTable } from "@/models/table/table";
+import React from "react";
 
 export default function Blackjack() {
+  const userName = "userName";
+  const user = new BlackjackPlayer(
+    0,
+    userName,
+    BlackJackPlayerType.USER,
+    BlackJackPlayerStatus.bet,
+    []
+  );
+  const [blackJackTable, setBlackJackTable] = useState<BlackjackTable>(
+    new BlackjackTable(user)
+  );
+
+  const handleClickBetChip = (
+    blackJackTable: BlackjackTable,
+    chipValue: number
+  ) => {
+    setBlackJackTable((blackJackTable: BlackjackTable) => {
+      if (chipValue <= blackJackTable.user.getChips()) {
+        blackJackTable.user?.setBet(chipValue);
+      }
+    });
+  };
+  const handleClickGameStartBtn = (): void => {};
+
+  const BlackJackBetPageProps = {
+    blackJackTable,
+    handleClickBetChip,
+    handleClickGameStartBtn,
+  };
+
   return (
     <>
       <Head>
@@ -10,7 +49,12 @@ export default function Blackjack() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>
-        <p>Blackjack</p>
+        <div className="flex justify-center">
+          <BlackJackBetPage {...BlackJackBetPageProps} />
+        </div>
+        <div className="flex justify-center">
+          <BlackJackGamePage />
+        </div>
       </div>
     </>
   );

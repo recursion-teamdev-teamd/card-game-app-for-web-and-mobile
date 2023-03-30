@@ -1,4 +1,5 @@
 import { Card } from "../card/card";
+import { GambleTable } from "../table/abstractTable";
 
 // 全てのPlayerの基盤となる抽象クラス
 export abstract class VanilaPlayer {
@@ -77,13 +78,9 @@ export abstract class GamblePlayer extends VanilaPlayer {
     name: string,
     playerType: string,
     playerStatus: string,
-    hand: Card[],
-    chips: number,
-    bet: number
+    hand: Card[]
   ) {
     super(id, name, playerType, playerStatus, hand);
-    this.setChips(chips);
-    this.setBet(bet);
   }
 
   protected getBet() {

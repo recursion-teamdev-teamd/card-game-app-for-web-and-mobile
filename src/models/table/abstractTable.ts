@@ -35,11 +35,26 @@ export abstract class TurnGameTable extends VanilaTable {
     if (player == this.players[this.players.length - 1]) return true;
     return false;
   }
+
+  public get players(): VanilaPlayer[] {
+    return this._players;
+  }
+  public set players(playerStatus: VanilaPlayer[]) {
+    this._players = playerStatus;
+  }
 }
 
 export abstract class GambleTable extends TurnGameTable {
-  abstract betDenominations: number[];
-  abstract hit: (player: VanilaPlayer) => void;
+  abstract _betDenominations: number[];
+  abstract hit(player: VanilaPlayer): void;
+
+  public get betDenominations(): number[] {
+    return this._betDenominations;
+  }
+
+  public set betDenominations(betDenominations: number[]) {
+    this._betDenominations = betDenominations;
+  }
 }
 
 export abstract class AbstractPokerTable extends GambleTable {
