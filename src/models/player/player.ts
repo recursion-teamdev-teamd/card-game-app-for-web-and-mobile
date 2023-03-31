@@ -28,8 +28,8 @@ export class BlackjackPlayer extends GamblePlayer {
     hand: Card[]
   ) {
     super(id, name, playerType, playerStatus, hand);
-    this.setChips(400);
-    this.setBet(0);
+    this.chips = 400;
+    this.bet = 0;
   }
 
   public isBlackJack(): boolean {
@@ -61,39 +61,6 @@ export class BlackjackPlayer extends GamblePlayer {
     if (this.isBlackJack()) {
       this.setChips(Math.floor(this.getChips() + this.getBet() * 1.5));
     }
-  }
-
-  public setID(id: number) {
-    this.id = id;
-  }
-  public getID() {
-    return this.id;
-  }
-  public setName(name: string) {
-    this.name = name;
-  }
-  public getName() {
-    return this.name;
-  }
-
-  public setPlayerStatus(playerStatus: string) {
-    this.playerStatus = playerStatus;
-  }
-  public getPlayerStatus() {
-    return this.playerStatus;
-  }
-  public setPlayerType(playerType: string) {
-    this.playerType = playerType;
-  }
-
-  public setHand(hand: Card[]) {
-    this.hand = hand;
-  }
-  public getHand() {
-    return this.hand;
-  }
-  public clearHand() {
-    this.setHand([]);
   }
 }
 
