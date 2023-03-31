@@ -1,3 +1,10 @@
+/*使用方法
+GamePhaseクラスはTableのプロパティの_gamePhaseに対応してます。
+例えばWarTable.gamePhaseに格納する値はWarGamePhaseから選ぶことになります。
+example
+let warTable = new WarGameTable();
+warTable.gamePhase = warGamePhase.betting
+*/
 export abstract class GamePhase {
   static readonly roundOver: string = "roundOver";
 }

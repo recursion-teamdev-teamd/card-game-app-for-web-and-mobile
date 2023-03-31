@@ -1,3 +1,11 @@
+/*使用方法
+GameResultクラスはTableのプロパティの_gameResultに対応してます。
+例えばWarTable.gameResultに格納する値はWarGameResultから選ぶことになります。
+example
+let warTable = new WarGameTable();
+warTable.gameResult = WarGameResult.win;
+*/
+
 export class GameResult {
   static readonly win: string = "win";
   static readonly lose: string = "lose";
