@@ -62,6 +62,39 @@ export class BlackjackPlayer extends GamblePlayer {
       this.setChips(Math.floor(this.getChips() + this.getBet() * 1.5));
     }
   }
+
+  public setID(id: number) {
+    this.id = id;
+  }
+  public getID() {
+    return this.id;
+  }
+  public setName(name: string) {
+    this.name = name;
+  }
+  public getName() {
+    return this.name;
+  }
+
+  public setPlayerStatus(playerStatus: string) {
+    this.playerStatus = playerStatus;
+  }
+  public getPlayerStatus() {
+    return this.playerStatus;
+  }
+  public setPlayerType(playerType: string) {
+    this.playerType = playerType;
+  }
+
+  public setHand(hand: Card[]) {
+    this.hand = hand;
+  }
+  public getHand() {
+    return this.hand;
+  }
+  public clearHand() {
+    this.setHand([]);
+  }
 }
 
 // チップをベットする系のゲームのディーラー

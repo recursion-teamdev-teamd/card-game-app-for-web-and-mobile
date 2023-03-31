@@ -4,12 +4,10 @@ import { BasicButton } from "@/components/ui/atoms/buttons/BasicButton";
 import { BlackjackTable } from "@/models/table/table";
 
 type Props = {
-  blackJackTable: BlackjackTable;
   handleClickBetChip;
 };
 export const BlackJackBetButtons: FC<Props> = (props) => {
-  const { blackJackTable, handleClickBetChip } = props;
-
+  const { handleClickBetChip } = props;
   return (
     <>
       <div className="h-5">

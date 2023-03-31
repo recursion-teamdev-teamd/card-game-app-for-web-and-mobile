@@ -33,10 +33,25 @@ export class BlackjackTable extends GambleTable {
     []
   );
 
-  constructor(user: BlackjackPlayer) {
+  private _user: BlackjackPlayer = new BlackjackPlayer(
+    1,
+    "user",
+    BlackJackPlayerType.USER,
+    BlackJackPlayerStatus.bet,
+    []
+  );
+
+  constructor(userName: string) {
     super();
     this.deck = new Deck(this.gameInfo);
-    this.players = [this.house, user];
+    this.user = new BlackjackPlayer(
+      0,
+      userName,
+      BlackJackPlayerType.USER,
+      BlackJackPlayerStatus.bet,
+      []
+    );
+    this.players = [this.house, this.user];
   }
 
   public hit(player: BlackjackPlayer) {
@@ -61,12 +76,12 @@ export class BlackjackTable extends GambleTable {
     return this._house;
   }
 
-  public get user(): BlackjackPlayer | undefined {
-    for (let player of this._players) {
-      if (player.playerType == BlackJackPlayerType.USER) {
-        return player;
-      }
-    }
+  public get user(): BlackjackPlayer {
+    return this._user;
+  }
+
+  public set user(v: BlackjackPlayer) {
+    this._user = v;
   }
 }
 
