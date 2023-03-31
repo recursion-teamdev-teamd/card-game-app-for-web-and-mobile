@@ -1,12 +1,14 @@
 import Head from "next/head";
-import { BlackJackPlayerStatus } from "@/models/playerStatus/playerStatus";
-import { BlackJackBetPage } from "./components/BlackJackBetPage";
-import { BlackJackGamePage } from "./components/BlackJackGamePage";
-import { useBlackJackState } from "./hooks/useBlackJack";
-
+import {
+  BlackJackPlayerStatus,
+  PlayerStatus,
+} from "@/models/playerStatus/playerStatus";
 import { useState } from "react";
 import { BlackjackTable } from "@/models/table/table";
 import React from "react";
+import { useBlackJackState } from "@/hooks/useBlackJack";
+import { BlackJackGamePage } from "@/components/blackjack/BlackJackGamePage";
+import { BlackJackBetPage } from "@/components/blackjack/BlackJackBetPage";
 
 export default function Blackjack() {
   const {
@@ -37,9 +39,9 @@ export default function Blackjack() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="h-screen">
-        <div>{blackJackTable.user.getPlayerStatus()}</div>
-        <div>{blackJackTable.user.getBet()}</div>
-        {blackJackTable.user.getPlayerStatus() == BlackJackPlayerStatus.bet ? (
+        <div>{blackJackTable.user.playerStatus}</div>
+        <div>{blackJackTable.user.bet}</div>
+        {blackJackTable.user.playerStatus == BlackJackPlayerStatus.bet ? (
           <BlackJackBetPage {...BlackJackBetPageProps} />
         ) : (
           <BlackJackGamePage {...BlackJackGamePageProps} />
