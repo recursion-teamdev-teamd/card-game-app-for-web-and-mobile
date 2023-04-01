@@ -57,21 +57,35 @@ export class BlackjackTable extends GambleTable {
   }
 
   public haveTableTurn() {
+    // if (this.isRoundOver()) {
+    //   this.setGameResult();
+    //   this.processAfterRoundOver();
+    // }
+    // if (this.user.playerStatus == BlackJackPlayerStatus.roundOver) {
+    //   this.haveTableTurn();
+    // }
     for (let player of this.players) this.havePlayerTurn(player);
-    if (this.isRoundOver()) {
-      this.setGameResult();
-      this.processAfterRoundOver();
-    }
-    if (this.user.playerStatus == BlackJackPlayerStatus.roundOver) {
-      this.haveTableTurn();
-    }
   }
 
   public havePlayerTurn(player: BlackjackPlayer) {
+    console.log("havePlayerTurn", player.name, player.playerStatus);
+    if (player.playerStatus == BlackJackPlayerStatus.roundOver) return;
+
     if (player.playerType != BlackJackPlayerType.USER)
       player.playerStatus = this.dicidePlayerStatus(player);
-    if (player.playerStatus == BlackJackPlayerStatus.hit) this.hit(player);
-    if (player.playerStatus == BlackJackPlayerStatus.stand) this.stand(player);
+
+    if (player.playerStatus == BlackJackPlayerStatus.hit) {
+      this.hit(player);
+      player.playerStatus = BlackJackPlayerStatus.waiting;
+    }
+
+    if (player.playerStatus == BlackJackPlayerStatus.stand) {
+      this.stand(player);
+      player.playerStatus == BlackJackPlayerStatus.roundOver;
+    }
+
+    if (player.isGameOver() || player.isBlackJack())
+      player.playerStatus = BlackJackPlayerStatus.roundOver;
   }
 
   public isRoundOver(): boolean {
@@ -111,8 +125,6 @@ export class BlackjackTable extends GambleTable {
   }
 
   public processAfterRoundOver() {
-    console.log("over");
-
     if (this.gameResult == BlackJackGameResult.win) {
       if (this.user.isBlackJack())
         this.user.chips += Math.floor(this.user.bet * 1.5);
@@ -145,11 +157,8 @@ export class BlackjackTable extends GambleTable {
 
   public hit(player: BlackjackPlayer) {
     player.hand.push(this.deck.drawOne()!);
-    if (player.isGameOver() || player.isBlackJack())
-      player.playerStatus = BlackJackPlayerStatus.roundOver;
-
-    player.playerStatus = BlackJackPlayerStatus.waiting;
   }
+
   public stand(player: BlackjackPlayer) {
     player.playerStatus = BlackJackPlayerStatus.roundOver;
   }

@@ -12,7 +12,7 @@ import { CardComponent } from "@/components/model/card/CardComponent";
 import { Card } from "@/models/card/card";
 
 type Props = {
-  blackJackTable: BlackjackTable;
+  blackJackTable;
   handleClickHitBtn;
   handleClickStandBtn;
 };

@@ -13,14 +13,14 @@ export const BlackJackGameButtons: FC<Props> = (props) => {
         <BasicButton
           buttonType="red"
           mediaQueries="p-4 mr-3"
-          onClick={() => handleClickHitBtn()}
+          onClick={handleClickHitBtn}
         >
           hit
         </BasicButton>
         <BasicButton
           buttonType="blue"
           mediaQueries="p-4 mr-3"
-          onClick={() => handleClickStandBtn()}
+          onClick={handleClickStandBtn}
         >
           stand
         </BasicButton>

@@ -16,7 +16,6 @@ export const PlayerField: FC<Props> = (props) => {
     <>
       <div>{player.name}</div>
       {player.hand.map((card) => {
-        // return <CardComponent card={card} key={card.suit + card.rank} />;
         const key: string = v4().toString();
         return card.isOpen ? (
           <Image

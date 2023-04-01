@@ -22,16 +22,18 @@ export default function Blackjack() {
   } = useBlackJackState();
 
   const BlackJackBetPageProps = {
+    blackJackTable,
+    setBlackJackTable,
     handleClickBetChip,
     handleClickGameStartBtn,
   };
   const BlackJackGamePageProps = {
     blackJackTable,
+    setBlackJackTable,
     handleClickHitBtn,
     handleClickStandBtn,
   };
 
-  console.log(blackJackTable);
   return (
     <>
       <Head>
