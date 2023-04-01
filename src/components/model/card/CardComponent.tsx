@@ -12,20 +12,36 @@ import { GiClown } from "react-icons/gi";
 
 type Props = {
   card: Card;
-  onClick: (data?: any) => void;
+  onClick?: (data?: any) => void;
 };
-
+const hiddenImgUrl: string = "/cards/BACK.png";
 export const CardComponent: FC<Props> = (props) => {
   const { card } = props;
-  const hiddenImgUrl: string = "/cards/BACK.png";
+
   return (
-    <div className="bg-[#ffffff] rounded-sm text-center p-2">
+    <div className="h-auto w-[35px] sm:w-[50px] md:w-[65px] lg:w-[75px]">
       {card.isOpen ? (
-        <div>
-          <Image src={card.imgUrl} alt="picture" />
-        </div>
+        <Image
+          src={card.imgUrl}
+          alt="picture"
+          width={100}
+          height={100}
+          style={{
+            width: "100%",
+            height: "auto",
+          }}
+        />
       ) : (
-        <Image src={hiddenImgUrl} alt="picture" />
+        <Image
+          src={hiddenImgUrl}
+          alt="picture"
+          width={100}
+          height={100}
+          style={{
+            width: "100%",
+            height: "auto",
+          }}
+        />
       )}
     </div>
   );
