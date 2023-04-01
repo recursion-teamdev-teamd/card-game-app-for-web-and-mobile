@@ -10,6 +10,7 @@ import { useState } from "react";
 import { CardComponent } from "@/components/model/card/CardComponent";
 
 import { Card } from "@/models/card/card";
+
 type Props = {
   blackJackTable: BlackjackTable;
   handleClickHitBtn;
@@ -19,26 +20,22 @@ type Props = {
 export const BlackJackGamePage: FC<Props> = (props) => {
   const { blackJackTable, handleClickHitBtn, handleClickStandBtn } = props;
 
-  const card = new Card("A", "H", false, "/cards/BACK.png");
-  blackJackTable.house.setHand([card]);
   const BlackJackGameButtonsProps = {
     handleClickHitBtn,
     handleClickStandBtn,
   };
   const houseProps = { player: blackJackTable.house };
-
+  const userProps = { player: blackJackTable.user };
   return (
     <>
       <div>
         <div className="flex  justify-center">
           <div className="grid grid-rows-2 grid-flow-col gap-4">
             <div className="flex bg-cyan-500 justify-center">
-              {<PlayerField {...houseProps} />}
+              <PlayerField {...houseProps} />
             </div>
             <div className="flex  justify-center">
-              <Image src={"/cards/BACK.png"} width={200} height={100} />
-              <Image src={"/cards/BACK.png"} width={200} height={100} />
-              <Image src={"/cards/BACK.png"} width={200} height={100} />
+              <PlayerField {...userProps} />
             </div>
           </div>
         </div>

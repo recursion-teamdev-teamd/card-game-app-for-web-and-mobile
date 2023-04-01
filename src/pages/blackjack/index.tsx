@@ -1,4 +1,5 @@
 import Head from "next/head";
+import { GambleGamePhase } from "@/models/gamePhase/gamePhase";
 import {
   BlackJackPlayerStatus,
   PlayerStatus,
@@ -30,6 +31,7 @@ export default function Blackjack() {
     handleClickStandBtn,
   };
 
+  console.log(blackJackTable);
   return (
     <>
       <Head>
@@ -41,7 +43,7 @@ export default function Blackjack() {
       <div className="h-screen">
         <div>{blackJackTable.user.playerStatus}</div>
         <div>{blackJackTable.user.bet}</div>
-        {blackJackTable.user.playerStatus == BlackJackPlayerStatus.bet ? (
+        {blackJackTable.gamePhase == GambleGamePhase.betting ? (
           <BlackJackBetPage {...BlackJackBetPageProps} />
         ) : (
           <BlackJackGamePage {...BlackJackGamePageProps} />

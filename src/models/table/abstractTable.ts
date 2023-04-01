@@ -19,6 +19,14 @@ export abstract class VanilaTable {
   public set gameResult(gameResult: string) {
     this._gameResult = gameResult;
   }
+
+  public get gamePhase(): string {
+    return this._gamePhase;
+  }
+
+  public set gamePhase(v: string) {
+    this._gamePhase = v;
+  }
 }
 
 export abstract class TurnGameTable extends VanilaTable {
