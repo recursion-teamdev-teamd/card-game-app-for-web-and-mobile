@@ -1,6 +1,35 @@
 import Head from "next/head";
+import {
+  BlackJackPlayerStatus,
+  PlayerStatus,
+} from "@/models/playerStatus/playerStatus";
+import { useState } from "react";
+import { BlackjackTable } from "@/models/table/table";
+import React from "react";
+import { useBlackJackState } from "@/hooks/useBlackJack";
+import { BlackJackGamePage } from "@/components/blackjack/BlackJackGamePage";
+import { BlackJackBetPage } from "@/components/blackjack/BlackJackBetPage";
 
 export default function Blackjack() {
+  const {
+    blackJackTable,
+    setBlackJackTable,
+    handleClickStandBtn,
+    handleClickHitBtn,
+    handleClickBetChip,
+    handleClickGameStartBtn,
+  } = useBlackJackState();
+
+  const BlackJackBetPageProps = {
+    handleClickBetChip,
+    handleClickGameStartBtn,
+  };
+  const BlackJackGamePageProps = {
+    blackJackTable,
+    handleClickHitBtn,
+    handleClickStandBtn,
+  };
+
   return (
     <>
       <Head>
@@ -9,8 +38,14 @@ export default function Blackjack() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div>
-        <p>Blackjack</p>
+      <div className="h-screen">
+        <div>{blackJackTable.user.playerStatus}</div>
+        <div>{blackJackTable.user.bet}</div>
+        {blackJackTable.user.playerStatus == BlackJackPlayerStatus.bet ? (
+          <BlackJackBetPage {...BlackJackBetPageProps} />
+        ) : (
+          <BlackJackGamePage {...BlackJackGamePageProps} />
+        )}
       </div>
     </>
   );

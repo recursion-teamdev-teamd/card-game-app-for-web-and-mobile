@@ -34,7 +34,7 @@ export class Deck {
 
     for (let i = 0; i < s; i++) {
       for (let j = 0; j < r; j++) {
-        const imgUrl = "/cards" + Deck.RANKS[j] + "-" + Deck.SUITS[i] + ".png";
+        const imgUrl = "/cards/" + Deck.RANKS[j] + "-" + Deck.SUITS[i] + ".png";
         deck.push(
           new Card(
             Deck.RANKS[j] as

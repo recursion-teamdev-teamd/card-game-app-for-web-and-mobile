@@ -1,57 +1,56 @@
 import { Card } from "../card/card";
+import { GambleTable } from "../table/abstractTable";
 
 // 全てのPlayerの基盤となる抽象クラス
 export abstract class VanilaPlayer {
-  abstract id: number;
-  abstract name: string;
-  abstract playerType: string;
-  abstract playerStatus: string;
-  abstract hand: Card[];
+  abstract _id: number;
+  abstract _name: string;
+  abstract _playerType: string;
+  abstract _playerStatus: string;
+  abstract _hand: Card[];
 
-  constructor(
-    id: number,
-    name: string,
-    playerType: string,
-    playerStatus: string,
-    hand: Card[]
-  ) {
-    this.setID(id);
-    this.setName(name);
-    this.setPlayerType(playerType);
-    this.setPlayerStatus(playerStatus);
-    this.setHand(hand);
-  }
-  protected setID(id: number) {
-    this.id = id;
-  }
-  protected getID() {
-    return this.id;
-  }
-  protected setName(name: string) {
-    this.name = name;
-  }
-  protected getName() {
-    return this.name;
+  public set id(v: number) {
+    this._id = v;
   }
 
-  protected setPlayerStatus(playerStatus: string) {
-    this.playerStatus = playerStatus;
-  }
-  protected getPlayerStatus() {
-    return this.playerStatus;
-  }
-  protected setPlayerType(playerType: string) {
-    this.playerType = playerType;
+  public get id(): number {
+    return this._id;
   }
 
-  protected setHand(hand: Card[]) {
-    this.hand = hand;
+  public set name(v: string) {
+    this._name = v;
   }
-  protected getHand() {
-    return this.hand;
+
+  public get name(): string {
+    return this._name;
   }
-  protected clearHand() {
-    this.setHand([]);
+
+  public get playerStatus(): string {
+    return this._playerStatus;
+  }
+
+  public set playerStatus(v: string) {
+    this._playerStatus = v;
+  }
+
+  public get playerType(): string {
+    return this._playerType;
+  }
+
+  public set playerType(v: string) {
+    this._playerType = v;
+  }
+
+  public get hand(): Card[] {
+    return this._hand;
+  }
+
+  public set hand(v: Card[]) {
+    this._hand = v;
+  }
+
+  public clearHand() {
+    this.hand = [];
   }
 }
 
@@ -59,46 +58,35 @@ export abstract class VanilaPlayer {
 export abstract class ScoreGamePlayer extends VanilaPlayer {
   abstract score: number;
 
-  protected getScore() {
+  public getScore() {
     return this.score;
   }
-  protected setScore(score: number) {
+  public setScore(score: number) {
     this.score = score;
   }
 }
 
 // ギャンブルゲームのPlayer
 export abstract class GamblePlayer extends VanilaPlayer {
-  abstract chips: number;
-  abstract bet: number;
+  abstract _chips: number;
+  abstract _bet: number;
 
-  constructor(
-    id: number,
-    name: string,
-    playerType: string,
-    playerStatus: string,
-    hand: Card[],
-    chips: number,
-    bet: number
-  ) {
-    super(id, name, playerType, playerStatus, hand);
-    this.setChips(chips);
-    this.setBet(bet);
+  public get chips(): number {
+    return this._chips;
   }
 
-  protected getBet() {
-    return this.bet;
+  public set chips(v: number) {
+    this._chips = v;
   }
 
-  protected setBet(bet: number) {
-    this.bet = bet;
+  public get bet(): number {
+    return this._bet;
   }
-  protected getChips() {
-    return this.chips;
+
+  public set bet(v: number) {
+    this._bet = v;
   }
-  protected setChips(chips: number) {
-    this.chips = chips;
-  }
+
   abstract getHandScore(): number;
   abstract updateChips(): void;
 }
