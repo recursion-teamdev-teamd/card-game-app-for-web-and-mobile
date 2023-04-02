@@ -31,6 +31,7 @@ export class BlackjackPlayer extends GamblePlayer {
     this.chips = 400;
     this.bet = 0;
   }
+
   public initForNewGame() {
     this.hand = [];
     this.bet = 0;

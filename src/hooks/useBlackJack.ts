@@ -11,6 +11,7 @@ import { BlackjackPlayer } from "@/models/player/player";
 
 import { useState } from "react";
 import { BlackjackTable } from "@/models/table/table";
+import { table } from "console";
 
 export const useBlackJackState = () => {
   const [blackJackTable, setBlackJackTable] = useState<BlackjackTable>(
@@ -23,16 +24,16 @@ export const useBlackJackState = () => {
     setToggleVal((val) => !val);
   }
 
-  const handleClickHitBtn = useMemo(() => {
+  const handleClickHitBtn = () => {
     setBlackJackTable((table: BlackjackTable) => {
-      // if (table.user.playerStatus == BlackJackPlayerStatus.roundOver)
-      //   return table;
+      if (table.user.playerStatus == BlackJackPlayerStatus.roundOver)
+        return table;
       table.user.playerStatus = BlackJackPlayerStatus.hit;
       table.haveTableTurn();
       return table;
     });
     render();
-  }, []);
+  };
 
   const handleClickStandBtn = () => {
     setBlackJackTable((table: BlackjackTable) => {
@@ -45,7 +46,7 @@ export const useBlackJackState = () => {
 
   const handleClickBetChip = (chipValue: number) => {
     setBlackJackTable((table: BlackjackTable) => {
-      if (chipValue <= table.user.chips - table.user.chips)
+      if (chipValue <= table.user.chips - table.user.bet)
         table.user.bet = blackJackTable.user.bet + chipValue;
       return table;
     });
@@ -55,22 +56,34 @@ export const useBlackJackState = () => {
 
   const handleClickGameStartBtn = () => {
     setBlackJackTable((table: BlackjackTable) => {
-      table.initTableForNewGame();
       table.players.map((player) => {
         player.playerStatus = BlackJackPlayerStatus.waiting;
-        table.gamePhase = GambleGamePhase.acting;
       });
+      table.gamePhase = GambleGamePhase.acting;
       return table;
     });
     render();
   };
+
+  const handleClickGameAgainBtn = () => {
+    setBlackJackTable((table: BlackjackTable) => {
+      if (table.user.chips < Math.min(...table.betDenominations))
+        return new BlackjackTable(table.user.name);
+
+      table.gamePhase = GambleGamePhase.betting;
+      return table;
+    });
+    render();
+  };
+
   return {
     blackJackTable,
     setBlackJackTable,
-    render,
     handleClickStandBtn,
     handleClickHitBtn,
     handleClickBetChip,
     handleClickGameStartBtn,
+    handleClickGameAgainBtn,
+    render,
   };
 };

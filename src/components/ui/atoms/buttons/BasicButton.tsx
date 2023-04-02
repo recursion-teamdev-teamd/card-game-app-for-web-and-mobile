@@ -25,7 +25,8 @@ export const BasicButton: FC<Props> = (props) => {
       className={`${baseStyle} , ${buttonTypeMap.get(
         buttonType
       )} ${mediaQueries} `}
-      onClick={() => onClick()}
+      // onClick={() => onClick()}
+      onClick={onClick}
     >
       {children}
     </button>

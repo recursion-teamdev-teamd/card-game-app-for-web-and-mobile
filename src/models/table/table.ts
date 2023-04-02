@@ -54,17 +54,22 @@ export class BlackjackTable extends GambleTable {
     this.players = [this.house, this.user];
     this.gamePhase = GambleGamePhase.betting;
     this.gameResult = BlackJackGameResult.yetDecided;
+    this.betDenominations = [5, 10, 50, 100];
   }
 
   public haveTableTurn() {
-    // if (this.isRoundOver()) {
-    //   this.setGameResult();
-    //   this.processAfterRoundOver();
-    // }
-    // if (this.user.playerStatus == BlackJackPlayerStatus.roundOver) {
-    //   this.haveTableTurn();
-    // }
     for (let player of this.players) this.havePlayerTurn(player);
+    if (this.isRoundOver()) {
+      this.setGameResult();
+      this.gamePhase = GambleGamePhase.roundOver;
+      this.processAfterRoundOver();
+    }
+    if (
+      this.user.playerStatus == BlackJackPlayerStatus.roundOver &&
+      this.gameResult == BlackJackGameResult.yetDecided
+    ) {
+      this.haveTableTurn();
+    }
   }
 
   public havePlayerTurn(player: BlackjackPlayer) {
@@ -81,14 +86,19 @@ export class BlackjackTable extends GambleTable {
 
     if (player.playerStatus == BlackJackPlayerStatus.stand) {
       this.stand(player);
-      player.playerStatus == BlackJackPlayerStatus.roundOver;
+      player.playerStatus = BlackJackPlayerStatus.roundOver;
     }
 
     if (player.isGameOver() || player.isBlackJack())
       player.playerStatus = BlackJackPlayerStatus.roundOver;
+    console.log("res", player.name, player.playerStatus);
   }
 
   public isRoundOver(): boolean {
+    if (this.house.isGameOver()) return true;
+    if (this.user.isGameOver()) return true;
+    if (this.house.isBlackJack()) return true;
+    if (this.user.isBlackJack()) return true;
     for (let player of this.players) {
       if (player.playerStatus != BlackJackPlayerStatus.roundOver) return false;
     }
@@ -122,6 +132,7 @@ export class BlackjackTable extends GambleTable {
     if (user.isBlackJack()) this.gameResult = BlackJackGameResult.win;
     if (house.isGameOver()) this.gameResult = BlackJackGameResult.win;
     if (user.isGameOver()) this.gameResult = BlackJackGameResult.lose;
+    console.log(this.gameResult);
   }
 
   public processAfterRoundOver() {
@@ -129,14 +140,13 @@ export class BlackjackTable extends GambleTable {
       if (this.user.isBlackJack())
         this.user.chips += Math.floor(this.user.bet * 1.5);
       else this.user.chips += this.user.bet;
-      if (this.gameResult == BlackJackGameResult.lose)
-        this.user.chips -= this.user.bet;
     }
+    if (this.gameResult == BlackJackGameResult.lose)
+      this.user.chips -= this.user.bet;
   }
 
   public initTableForNewGame() {
     this.initDeck();
-    this.turnCounter = 0;
     this.gameResult = BlackJackGameResult.yetDecided;
     this.gamePhase = GambleGamePhase.betting;
     for (let player of this.players) player.initForNewGame();
@@ -160,7 +170,7 @@ export class BlackjackTable extends GambleTable {
   }
 
   public stand(player: BlackjackPlayer) {
-    player.playerStatus = BlackJackPlayerStatus.roundOver;
+    // player.playerStatus = BlackJackPlayerStatus.roundOver;
   }
 
   public get players(): BlackjackPlayer[] {

@@ -1,29 +1,31 @@
-import { BlackjackTable } from "@/models/table/table";
 import { PlayerField } from "./PlayerField";
 import { BlackJackGameButtons } from "./BlackJackGameButtons";
-import Image from "next/image";
-import { BasicButton } from "@/components/ui/atoms/buttons/BasicButton";
 
-import { FC, ReactNode } from "react";
-import { BlackjackPlayer } from "@/models/player/player";
-import { useState } from "react";
-import { CardComponent } from "@/components/model/card/CardComponent";
-
-import { Card } from "@/models/card/card";
+import { FC } from "react";
+import React from "react";
 
 type Props = {
   blackJackTable;
   handleClickHitBtn;
   handleClickStandBtn;
+  handleClickGameAgainBtn;
 };
 
 export const BlackJackGamePage: FC<Props> = (props) => {
-  const { blackJackTable, handleClickHitBtn, handleClickStandBtn } = props;
-
-  const BlackJackGameButtonsProps = {
+  const {
+    blackJackTable,
     handleClickHitBtn,
     handleClickStandBtn,
+    handleClickGameAgainBtn,
+  } = props;
+
+  const BlackJackGameButtonsProps = {
+    blackJackTable,
+    handleClickHitBtn,
+    handleClickStandBtn,
+    handleClickGameAgainBtn,
   };
+
   const houseProps = { player: blackJackTable.house };
   const userProps = { player: blackJackTable.user };
   return (

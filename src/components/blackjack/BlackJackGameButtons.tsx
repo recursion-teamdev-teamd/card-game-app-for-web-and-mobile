@@ -1,12 +1,23 @@
 import React from "react";
 import { FC } from "react";
 import { BasicButton } from "@/components/ui/atoms/buttons/BasicButton";
-import { BlackjackTable } from "@/models/table/table";
+import { GambleGamePhase } from "@/models/gamePhase/gamePhase";
 
-type Props = { handleClickHitBtn; handleClickStandBtn };
+type Props = {
+  blackJackTable;
+  handleClickHitBtn;
+  handleClickStandBtn;
+  handleClickGameAgainBtn;
+};
 
 export const BlackJackGameButtons: FC<Props> = (props) => {
-  const { handleClickHitBtn, handleClickStandBtn } = props;
+  const {
+    blackJackTable,
+    handleClickHitBtn,
+    handleClickStandBtn,
+    handleClickGameAgainBtn,
+  } = props;
+
   return (
     <>
       <div className="h-5">
@@ -24,6 +35,15 @@ export const BlackJackGameButtons: FC<Props> = (props) => {
         >
           stand
         </BasicButton>
+        {blackJackTable.gamePhase == GambleGamePhase.roundOver && (
+          <BasicButton
+            buttonType="red"
+            mediaQueries="p-4 mr-3 h-5 "
+            onClick={handleClickGameAgainBtn}
+          >
+            again
+          </BasicButton>
+        )}
       </div>
     </>
   );
