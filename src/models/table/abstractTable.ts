@@ -16,8 +16,21 @@ export abstract class VanilaTable {
   public set deck(deck: Deck) {
     this._deck = deck;
   }
+
+  public get gameResult(): string {
+    return this._gameResult;
+  }
+
   public set gameResult(gameResult: string) {
     this._gameResult = gameResult;
+  }
+
+  public get gamePhase(): string {
+    return this._gamePhase;
+  }
+
+  public set gamePhase(v: string) {
+    this._gamePhase = v;
   }
 }
 

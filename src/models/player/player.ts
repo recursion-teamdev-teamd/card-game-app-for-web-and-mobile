@@ -32,6 +32,16 @@ export class BlackjackPlayer extends GamblePlayer {
     this.bet = 0;
   }
 
+  public initForNewGame() {
+    this.hand = [];
+    this.bet = 0;
+    this.playerStatus = BlackJackPlayerStatus.bet;
+  }
+
+  public isGameOver(): boolean {
+    if (this.getHandScore() > 21) return true;
+    return false;
+  }
   public isBlackJack(): boolean {
     if (this.getHandScore() == 21) return true;
     return false;
@@ -53,14 +63,6 @@ export class BlackjackPlayer extends GamblePlayer {
       }
     }
     return handScore;
-  }
-
-  public updateChips(table: BlackjackTable): void {
-    if (table.gameResult == BlackJackGameResult.win) {
-    }
-    if (this.isBlackJack()) {
-      this.setChips(Math.floor(this.getChips() + this.getBet() * 1.5));
-    }
   }
 }
 

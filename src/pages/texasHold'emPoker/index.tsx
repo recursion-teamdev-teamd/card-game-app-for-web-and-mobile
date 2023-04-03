@@ -1,4 +1,4 @@
-import Head from 'next/head'
+import Head from "next/head";
 
 export default function TexasHoldemPoker() {
   return (
@@ -13,5 +13,5 @@ export default function TexasHoldemPoker() {
         <p>Texas hold</p>
       </div>
     </>
-  )
+  );
 }

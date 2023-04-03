@@ -7,6 +7,7 @@ warTable.gameResult = WarGameResult.win;
 */
 
 export class GameResult {
+  static readonly yetDecided: string = "yetDecided";
   static readonly win: string = "win";
   static readonly lose: string = "lose";
 }

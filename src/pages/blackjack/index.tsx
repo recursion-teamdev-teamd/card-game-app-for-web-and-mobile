@@ -1,10 +1,5 @@
 import Head from "next/head";
-import {
-  BlackJackPlayerStatus,
-  PlayerStatus,
-} from "@/models/playerStatus/playerStatus";
-import { useState } from "react";
-import { BlackjackTable } from "@/models/table/table";
+import { GambleGamePhase } from "@/models/gamePhase/gamePhase";
 import React from "react";
 import { useBlackJackState } from "@/hooks/useBlackJack";
 import { BlackJackGamePage } from "@/components/blackjack/BlackJackGamePage";
@@ -18,16 +13,23 @@ export default function Blackjack() {
     handleClickHitBtn,
     handleClickBetChip,
     handleClickGameStartBtn,
+    handleClickGameAgainBtn,
+    render,
   } = useBlackJackState();
 
   const BlackJackBetPageProps = {
+    blackJackTable,
+    setBlackJackTable,
     handleClickBetChip,
     handleClickGameStartBtn,
+    render,
   };
   const BlackJackGamePageProps = {
     blackJackTable,
+    setBlackJackTable,
     handleClickHitBtn,
     handleClickStandBtn,
+    handleClickGameAgainBtn,
   };
 
   return (
@@ -39,9 +41,16 @@ export default function Blackjack() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="h-screen">
-        <div>{blackJackTable.user.playerStatus}</div>
+        <div>{blackJackTable.user.chips}</div>
         <div>{blackJackTable.user.bet}</div>
-        {blackJackTable.user.playerStatus == BlackJackPlayerStatus.bet ? (
+        <div>{blackJackTable.gamePhase}</div>
+        {/* {blackJackTable.gamePhase == GambleGamePhase.betting && (
+          <BlackJackBetPage {...BlackJackBetPageProps} />
+        )} */}
+        {/* {blackJackTable.gamePhase == GambleGamePhase.acting && (
+          <BlackJackGamePage {...BlackJackGamePageProps} />
+        )} */}
+        {blackJackTable.gamePhase == GambleGamePhase.betting ? (
           <BlackJackBetPage {...BlackJackBetPageProps} />
         ) : (
           <BlackJackGamePage {...BlackJackGamePageProps} />

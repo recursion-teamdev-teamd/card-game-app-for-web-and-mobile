@@ -1,44 +1,43 @@
-import { BlackjackTable } from "@/models/table/table";
 import { PlayerField } from "./PlayerField";
 import { BlackJackGameButtons } from "./BlackJackGameButtons";
-import Image from "next/image";
-import { BasicButton } from "@/components/ui/atoms/buttons/BasicButton";
 
-import { FC, ReactNode } from "react";
-import { BlackjackPlayer } from "@/models/player/player";
-import { useState } from "react";
-import { CardComponent } from "@/components/model/card/CardComponent";
+import { FC } from "react";
+import React from "react";
 
-import { Card } from "@/models/card/card";
 type Props = {
-  blackJackTable: BlackjackTable;
+  blackJackTable;
   handleClickHitBtn;
   handleClickStandBtn;
+  handleClickGameAgainBtn;
 };
 
 export const BlackJackGamePage: FC<Props> = (props) => {
-  const { blackJackTable, handleClickHitBtn, handleClickStandBtn } = props;
-
-  const card = new Card("A", "H", false, "/cards/BACK.png");
-  blackJackTable.house.setHand([card]);
-  const BlackJackGameButtonsProps = {
+  const {
+    blackJackTable,
     handleClickHitBtn,
     handleClickStandBtn,
-  };
-  const houseProps = { player: blackJackTable.house };
+    handleClickGameAgainBtn,
+  } = props;
 
+  const BlackJackGameButtonsProps = {
+    blackJackTable,
+    handleClickHitBtn,
+    handleClickStandBtn,
+    handleClickGameAgainBtn,
+  };
+
+  const houseProps = { player: blackJackTable.house };
+  const userProps = { player: blackJackTable.user };
   return (
     <>
       <div>
         <div className="flex  justify-center">
           <div className="grid grid-rows-2 grid-flow-col gap-4">
             <div className="flex bg-cyan-500 justify-center">
-              {<PlayerField {...houseProps} />}
+              <PlayerField {...houseProps} />
             </div>
             <div className="flex  justify-center">
-              <Image src={"/cards/BACK.png"} width={200} height={100} />
-              <Image src={"/cards/BACK.png"} width={200} height={100} />
-              <Image src={"/cards/BACK.png"} width={200} height={100} />
+              <PlayerField {...userProps} />
             </div>
           </div>
         </div>

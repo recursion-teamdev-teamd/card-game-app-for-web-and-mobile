@@ -5,14 +5,31 @@ import { BlackJackGameStartBtn } from "./BlackJackGameStartBtn";
 import { FC, ReactNode } from "react";
 import { BlackjackPlayer } from "@/models/player/player";
 import { useState } from "react";
+import { useEffect } from "react";
+import React from "react";
 
 type Props = {
+  setBlackJackTable;
   handleClickBetChip;
   handleClickGameStartBtn;
+  render;
 };
 
 export const BlackJackBetPage: FC<Props> = (props) => {
-  const { handleClickBetChip, handleClickGameStartBtn } = props;
+  const {
+    setBlackJackTable,
+    handleClickBetChip,
+    handleClickGameStartBtn,
+    render,
+  } = props;
+
+  useEffect(() => {
+    setBlackJackTable((table: BlackjackTable) => {
+      table.initTableForNewGame();
+      return table;
+    });
+    render();
+  }, []);
 
   const BlackJackBetButtonsProps = {
     handleClickBetChip,

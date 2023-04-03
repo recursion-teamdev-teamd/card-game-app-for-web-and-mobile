@@ -70,6 +70,20 @@ export abstract class ScoreGamePlayer extends VanilaPlayer {
 export abstract class GamblePlayer extends VanilaPlayer {
   abstract _chips: number;
   abstract _bet: number;
+  constructor(
+    id: number,
+    name: string,
+    playerType: string,
+    playerStatus: string,
+    hand: Card[]
+  ) {
+    super();
+    this.id = id;
+    this.name = name;
+    this.playerType = playerType;
+    this.playerStatus = playerStatus;
+    this.hand = hand;
+  }
 
   public get chips(): number {
     return this._chips;
@@ -88,7 +102,7 @@ export abstract class GamblePlayer extends VanilaPlayer {
   }
 
   abstract getHandScore(): number;
-  abstract updateChips(): void;
+  // abstract updateChips(): void;
 }
 // ギャンブルゲームのディーラー
 export abstract class GambleDealer extends VanilaPlayer {}
