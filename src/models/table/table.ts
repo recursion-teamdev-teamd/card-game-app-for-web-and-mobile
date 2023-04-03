@@ -33,18 +33,12 @@ export class BlackjackTable extends GambleTable {
     []
   );
 
-  private _user: BlackjackPlayer = new BlackjackPlayer(
-    1,
-    "user",
-    BlackJackPlayerType.USER,
-    BlackJackPlayerStatus.bet,
-    []
-  );
+  private _user: BlackjackPlayer;
 
   constructor(userName: string) {
     super();
     this.deck = new Deck(this.gameInfo);
-    this.user = new BlackjackPlayer(
+    this._user = new BlackjackPlayer(
       0,
       userName,
       BlackJackPlayerType.USER,
