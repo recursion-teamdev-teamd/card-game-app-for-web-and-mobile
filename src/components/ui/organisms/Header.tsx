@@ -13,7 +13,7 @@ export const Header: FC<Props> = (props) => {
   const {} = props;
   const { isMoreThanMd } = useCustomMediaQuery();
   return (
-    <div className="fixed top-0 z-[100] w-full rounded-lg shadow-sm p-4 md:p-0">
+    <div className="fixed h-[10%] bg-white top-0 z-[100] w-full rounded-sm shadow-sm p-4 md:p-0">
       <div className="h-full w-full flex items-center justify-between md:justify-start">
         <div className="pl-3 hover:opacity-50 hover:duration-500 cursor-pointer">
           <TitleLogo />
