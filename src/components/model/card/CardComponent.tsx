@@ -3,23 +3,27 @@ import Image from "next/image";
 import React from "react";
 import { FC } from "react";
 import {
-  BsFillSuitClubFill,
-  BsFillSuitDiamondFill,
-  BsFillSuitHeartFill,
-  BsFillSuitSpadeFill,
-} from "react-icons/bs";
-import { GiClown } from "react-icons/gi";
+  AnimationControls,
+  motion,
+  TargetAndTransition,
+  VariantLabels,
+} from "framer-motion";
 
 type Props = {
   card: Card;
   onClick?: (data?: any) => void;
+  animate?: boolean | AnimationControls | TargetAndTransition | VariantLabels;
 };
 const hiddenImgUrl: string = "/cards/BACK.png";
 export const CardComponent: FC<Props> = (props) => {
-  const { card } = props;
+  const { card, onClick, animate } = props;
 
   return (
-    <div className="h-auto w-[35px] sm:w-[50px] md:w-[65px] lg:w-[75px]">
+    <motion.div
+      className="h-auto w-[35px] sm:w-[50px] md:w-[65px] lg:w-[75px]"
+      onClick={onClick}
+      animate={animate}
+    >
       {card.isOpen ? (
         <Image
           src={card.imgUrl}
@@ -43,6 +47,6 @@ export const CardComponent: FC<Props> = (props) => {
           }}
         />
       )}
-    </div>
+    </motion.div>
   );
 };
