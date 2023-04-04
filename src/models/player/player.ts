@@ -40,14 +40,14 @@ export class WarPlayer extends ScoreGamePlayer {
     this.score = 0;
   }
 
-  // ランダムにカードを取り出す, typeCard
+  // ランダムにカードを取り出す
   public cpuSelectCard() {
-    return this.hand[Math.floor(Math.random() * 26)];
+    return this.hand.splice(Math.floor(Math.random() * 26));
   }
 
-  // 特定のインデックスのカードを取り出す, typeCard
-  public userSelectCard() {
-    return this.hand.indexOf(this.selectedCard);
+  // 特定のインデックスのカードを取り出す
+  public userSelectCard(index: number) {
+    return this.hand.splice(index, 1);
   }
 
   public get selectedCard(): Card {
