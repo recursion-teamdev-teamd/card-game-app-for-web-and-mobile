@@ -16,7 +16,48 @@ export class SpeedPlayer extends VanilaPlayer {}
 // スコア制のゲームのプレイヤー(ギャンブルではないプレイヤー)
 export class RummyPlayer extends ScoreGamePlayer {}
 
-export class WarPlayer extends ScoreGamePlayer {}
+export class WarPlayer extends ScoreGamePlayer {
+  _score: number;
+  _id: number;
+  _name: string;
+  _playerType: "user" | "cpu";
+  _playerStatus: string;
+  _hand: Card[];
+  _selectedCard: Card | null = null;
+  constructor(
+    id: number,
+    name: string,
+    playerType: "user" | "cpu",
+    hand: Card[],
+    score: number
+  ) {
+    super(id, name, hand, score);
+    this._playerType = playerType;
+  }
+
+  public initForNewGame() {
+    this.hand = [];
+    this.score = 0;
+  }
+
+  // ランダムにカードを取り出す
+  public cpuSelectCard() {
+    return this.hand.splice(Math.floor(Math.random() * 26));
+  }
+
+  // 特定のインデックスのカードを取り出す
+  public userSelectCard(index: number) {
+    return this.hand.splice(index, 1);
+  }
+
+  public get selectedCard(): Card {
+    return this.selectedCard;
+  }
+  public set selectedCard(card: Card) {
+    this.selectedCard = card;
+  }
+
+}
 
 // チップをベットするゲームのプレイヤー
 export class BlackjackPlayer extends GamblePlayer {

@@ -56,12 +56,25 @@ export abstract class VanilaPlayer {
 
 // スコア制ゲームのPlayer
 export abstract class ScoreGamePlayer extends VanilaPlayer {
-  abstract score: number;
+  abstract _score: number;
 
-  public getScore() {
+  constructor(
+    id: number,
+    name: string,
+    hand: Card[],
+    score: number
+  ) {
+    super();
+    this.id = id;
+    this.name = name;
+    this.hand = hand;
+    this.score = score;
+  }
+
+  public get score(): number {
     return this.score;
   }
-  public setScore(score: number) {
+  public set score(score: number) {
     this.score = score;
   }
 }
