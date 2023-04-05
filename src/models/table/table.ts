@@ -24,7 +24,7 @@ export class RummyTable extends TurnGameTable {}
 // ターンの概念があり、賭け金を要するゲーム
 export class BlackjackTable extends GambleTable {
   private _gameInfo: GameInfo = gameInfoBlackJack;
-  private _players: BlackjackPlayer[] = [];
+  private _players: BlackjackPlayer[];
   private _house: BlackjackPlayer = new BlackjackPlayer(
     0,
     "house",
@@ -37,7 +37,7 @@ export class BlackjackTable extends GambleTable {
 
   constructor(userName: string) {
     super();
-    this.deck = new Deck(this.gameInfo);
+    this._deck = new Deck(this.gameInfo);
     this._user = new BlackjackPlayer(
       0,
       userName,
@@ -45,7 +45,7 @@ export class BlackjackTable extends GambleTable {
       BlackJackPlayerStatus.bet,
       []
     );
-    this.players = [this.house, this.user];
+    this._players = [this.house, this.user];
     this.gamePhase = GambleGamePhase.betting;
     this.gameResult = BlackJackGameResult.yetDecided;
     this.betDenominations = [5, 10, 50, 100];
@@ -71,7 +71,7 @@ export class BlackjackTable extends GambleTable {
     if (player.playerStatus == BlackJackPlayerStatus.roundOver) return;
 
     if (player.playerType != BlackJackPlayerType.USER)
-      player.playerStatus = this.dicidePlayerStatus(player);
+      player.playerStatus = this.decidePlayerStatus(player);
 
     if (player.playerStatus == BlackJackPlayerStatus.hit) {
       this.hit(player);
@@ -99,7 +99,7 @@ export class BlackjackTable extends GambleTable {
     return true;
   }
 
-  public dicidePlayerStatus(player: BlackjackPlayer) {
+  public decidePlayerStatus(player: BlackjackPlayer) {
     if (player.playerStatus == BlackJackPlayerStatus.roundOver)
       return player.playerStatus;
     if (player.getHandScore() >= 17) return BlackJackPlayerStatus.stand;

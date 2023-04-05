@@ -1,5 +1,5 @@
 import { HomePage } from "@/components/page/HomePage";
-import { BasicButton } from "@/components/ui/atoms/buttons/BasicButton";
+import { BasicButton } from "@/components/commonUI/atoms/buttons/BasicButton";
 import Head from "next/head";
 import React from "react";
 
