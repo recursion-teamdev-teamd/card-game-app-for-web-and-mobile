@@ -1,7 +1,7 @@
 import { gameInfoArray } from "@/models/gameInfo/gameInfo";
 import React from "react";
-import { GameShowCase } from "../ui/molecules/GameShowCase";
-import { Header } from "../ui/organisms/Header";
+import { GameShowCase } from "../common/ui/molecules/GameShowCase";
+import { Header } from "../common/ui/organisms/Header";
 
 export const HomePage = () => {
   return (
