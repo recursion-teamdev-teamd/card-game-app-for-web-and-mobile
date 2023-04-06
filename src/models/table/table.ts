@@ -19,24 +19,12 @@ export class WarTable extends VanilaTable {
   private _gameInfo: GameInfo = gameInfoWar;
   private stock: number = 2;
   private _players: WarPlayer[] = [];
-  private _cpu: WarPlayer = new WarPlayer (
-    0,
-    "CPU",
-    "cpu",
-    [],
-    0
-  );
+  private _cpu: WarPlayer = new WarPlayer(0, "CPU", "cpu", [], 0);
   private _user: WarPlayer;
   constructor(userName: string) {
     super();
     this.deck = new Deck(this.gameInfo);
-    this._user = new WarPlayer(
-      0,
-      userName,
-      "user",
-      [],
-      0
-    );
+    this._user = new WarPlayer(0, userName, "user", [], 0);
     this.players = [this.cpu, this.user];
   }
 
@@ -49,11 +37,11 @@ export class WarTable extends VanilaTable {
     const cpuCard = this.getRankNumber(cpu.selectedCard);
     const userCard = this.getRankNumber(user.selectedCard);
 
-    if(userCard == cpuCard) {
+    if (userCard == cpuCard) {
       this.stock += 2;
-    } else if(userCard > cpuCard) {
+    } else if (userCard > cpuCard) {
       user.score += this.stock;
-    } else if(userCard < cpuCard) {
+    } else if (userCard < cpuCard) {
       cpu.score += this.stock;
     }
   }
@@ -61,7 +49,7 @@ export class WarTable extends VanilaTable {
   public splitHalfOfDeck(player: WarPlayer) {
     this.deck.resetDeck();
     this.deck.shuffleDeck();
-    for(let i = 0; i < 26; i++) {
+    for (let i = 0; i < 26; i++) {
       player.hand.push(this.deck.drawOne()!);
       player.hand.push(this.deck.drawOne()!);
     }
@@ -69,21 +57,21 @@ export class WarTable extends VanilaTable {
 
   public getRankNumber(card: Card) {
     const rank = card.rank;
-    if(rank === "A") {
+    if (rank === "A") {
       return 1;
-    }else if(rank === "J") {
+    } else if (rank === "J") {
       return 11;
-    }else if(rank === "Q") {
+    } else if (rank === "Q") {
       return 12;
-    }else if(rank === "K") {
+    } else if (rank === "K") {
       return 13;
-    }else {
+    } else {
       return parseInt(rank);
     }
   }
 
   public get gameInfo() {
-    return this._gameInfo
+    return this._gameInfo;
   }
   public get players(): WarPlayer[] {
     return this._players;
@@ -100,12 +88,18 @@ export class WarTable extends VanilaTable {
   public get user(): WarPlayer {
     return this._user;
   }
-  public set user(v:WarPlayer) {
+  public set user(v: WarPlayer) {
     this._user = v;
   }
 }
 
-export class SpeedTable extends VanilaTable {}
+export class SpeedTable extends VanilaTable {
+  private _gameInfo: GameInfo;
+  private _deck: Deck;
+  private _players: VanilaPlayer[];
+  private _gamePhase: string;
+  private _gameResult: string;
+}
 
 // ターンの概念があり、賭け金がいらないゲーム
 export class RummyTable extends TurnGameTable {}
