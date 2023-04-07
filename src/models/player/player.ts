@@ -1,7 +1,7 @@
 import { Card } from "../card/card";
 import { BlackjackTable } from "../table/table";
 import { BlackJackGameResult } from "../gameResult/gameResult";
-import { BlackJackPlayerStatus } from "../playerStatus/playerStatus";
+import { BlackjackPlayerStatus } from "../playerStatus/playerStatus";
 import {
   AbstractPokerPlayer,
   GambleDealer,
@@ -9,6 +9,7 @@ import {
   ScoreGamePlayer,
   VanilaPlayer,
 } from "./abstractPlayer";
+import { BlackjackPlayerType } from "../playerType/playerType";
 
 // 基本的なVanilaPlayerクラスから拡張した、手札スコア制でもギャンブルでもないゲームのPlayerクラス
 export class SpeedPlayer extends VanilaPlayer {}
@@ -61,31 +62,79 @@ export class WarPlayer extends ScoreGamePlayer {
 
 // チップをベットするゲームのプレイヤー
 export class BlackjackPlayer extends GamblePlayer {
+  readonly _playerType: BlackjackPlayerType;
+  protected _playerStatus: BlackjackPlayerStatus;
+
   constructor(
     id: number,
     name: string,
-    playerType: string,
-    playerStatus: string,
-    hand: Card[]
+    hand: Card[],
+    chips: number,
+    bet: number,
+    playerType: BlackjackPlayerType,
+    playerStatus: BlackjackPlayerStatus
   ) {
-    super(id, name, playerType, playerStatus, hand);
-    this.chips = 400;
-    this.bet = 0;
+    super(id, name, hand, chips, bet);
+    this._playerType = playerType;
+    this._playerStatus = playerStatus;
   }
 
-  public initForNewGame() {
+  public get playerStatus(): BlackjackPlayerStatus {
+    return this._playerStatus;
+  }
+  protected set playerStatus(playerStatus: BlackjackPlayerStatus) {
+    this._playerStatus = playerStatus;
+  }
+
+  // 初期化
+  protected initForNewGame() {
     this.hand = [];
     this.bet = 0;
-    this.playerStatus = BlackJackPlayerStatus.bet;
+    this.playerStatus = "Betting";
   }
 
-  public isGameOver(): boolean {
-    if (this.getHandScore() > 21) return true;
-    return false;
+  // playerActon関連
+  // Hitの関数
+  public actionHit(card: Card) {
+    this.playerStatus = "Hit";
+    this.addACardToHand(card);
+    if (this.isBust()) this.playerStatus = "Bust";
   }
+  // standの関数
+  public actionStand() {
+    this.playerStatus = "Stand";
+  }
+  // doubleの関数
+  public actionDouble(card: Card) {
+    this.playerStatus = "Double";
+    this.addACardToHand(card);
+    if (this.isBust()) this.playerStatus = "DoubleBust";
+  }
+  // Bustかどうかを判定
+  public isBust(): boolean {
+    return this.getHandScore() > 21;
+  }
+  // BlackJackかどうかを判定
   public isBlackJack(): boolean {
-    if (this.getHandScore() == 21) return true;
-    return false;
+    return this.getHandScore() == 21;
+  }
+
+  // playerがアクション終了しているか
+  public isPlayerDoneWithAction() {
+    return (
+      this.playerStatus === "Stand" ||
+      this.playerStatus === "Bust" ||
+      this.playerStatus === "DoubleBust"
+    );
+  }
+  //
+
+  // Bet関連
+
+  // AIにベットさせる関数　ブラックジャックではとりあえず所持金の30%をかけさせてます
+  public makeAIInitialBet(): void {
+    const curChips = this.chips;
+    this.bet = curChips * 0.3;
   }
 
   public getHandScore(): number {

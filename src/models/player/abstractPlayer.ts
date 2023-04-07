@@ -1,15 +1,23 @@
+import { VanilaPlayerType } from "./../playerType/playerType";
 import { Card } from "../card/card";
 import { GambleTable } from "../table/abstractTable";
 
 // 全てのPlayerの基盤となる抽象クラス
 export abstract class VanilaPlayer {
-  abstract _id: number;
-  abstract _name: string;
-  abstract _playerType: string;
-  abstract _playerStatus: string;
-  abstract _hand: Card[];
+  private _id: number;
+  private _name: string;
 
-  public set id(v: number) {
+  private _hand: Card[];
+  // protected abstract _playerStatus: string;
+  protected abstract readonly _playerType: string;
+
+  constructor(id: number, name: string, hand: Card[]) {
+    this._id = id;
+    this._name = name;
+    this._hand = hand;
+  }
+
+  protected set id(v: number) {
     this._id = v;
   }
 
@@ -17,7 +25,7 @@ export abstract class VanilaPlayer {
     return this._id;
   }
 
-  public set name(v: string) {
+  protected set name(v: string) {
     this._name = v;
   }
 
@@ -25,94 +33,127 @@ export abstract class VanilaPlayer {
     return this._name;
   }
 
-  public get playerStatus(): string {
-    return this._playerStatus;
-  }
+  //  ↓手札関連のメソッド　//
 
-  public set playerStatus(v: string) {
-    this._playerStatus = v;
-  }
-
-  public get playerType(): string {
-    return this._playerType;
-  }
-
-  public set playerType(v: string) {
-    this._playerType = v;
-  }
-
-  public get hand(): Card[] {
+  protected get hand(): Card[] {
     return this._hand;
   }
 
-  public set hand(v: Card[]) {
+  protected set hand(v: Card[]) {
     this._hand = v;
   }
 
-  public clearHand() {
-    this.hand = [];
+  // カードを一枚手札に加える関数
+  protected addACardToHand(card: Card) {
+    this._hand.push(card);
   }
+  // 特定のインデックスのカードを手札から除く関数
+  protected removeACardFromHand(index: number) {
+    this._hand.splice(index, 1);
+  }
+
+  //  ↑手札関連のメソッドここまで　//
+
+  // abstract get playerStatus()
+
+  // protected abstract set playerStatus(playerStatus : string)
 }
 
 // スコア制ゲームのPlayer
 export abstract class ScoreGamePlayer extends VanilaPlayer {
-  abstract _score: number;
 
-  constructor(
-    id: number,
-    name: string,
-    hand: Card[],
-    score: number
-  ) {
-    super();
-    this.id = id;
-    this.name = name;
-    this.hand = hand;
-    this.score = score;
+  private _score: number;
+
+  constructor(id: number, name: string, hand: Card[], score: number) {
+    super(id, name, hand);
+    this._score = score;
   }
 
-  public get score(): number {
-    return this.score;
+  public get score() {
+    return this._score;
   }
-  public set score(score: number) {
-    this.score = score;
+
+  protected set score(score: number) {
+    this._score = score;
+  }
+
+  // 引数のvalue分だけスコアを加算するメソッド
+  protected incrementScore(value: number) {
+    const cur = this.score;
+    this.score = cur + value;
+  }
+
+  // 引数のvalue分だけスコアをマイナスするメソッド
+  protected decrementScore(value: number) {
+    const cur = this.score;
+    this.score = cur - value;
+  }
+  // 引数のvalue分マイナスできるか（０以下にならないか）
+  protected isAbleToDecrementScore(value: number): boolean {
+    return this.score >= value;
   }
 }
 
 // ギャンブルゲームのPlayer
 export abstract class GamblePlayer extends VanilaPlayer {
-  abstract _chips: number;
-  abstract _bet: number;
+  private _chips: number;
+  private _bet: number;
+
   constructor(
     id: number,
     name: string,
-    playerType: string,
-    playerStatus: string,
-    hand: Card[]
+    hand: Card[],
+    chips: number,
+    bet: number
   ) {
-    super();
+    super(id, name, hand);
     this.id = id;
     this.name = name;
-    this.playerType = playerType;
-    this.playerStatus = playerStatus;
     this.hand = hand;
+    this._chips = chips;
+    this._bet = bet;
   }
 
   public get chips(): number {
     return this._chips;
   }
 
-  public set chips(v: number) {
+  protected set chips(v: number) {
     this._chips = v;
+  }
+
+  // chipを特定の額追加する
+  protected incrementChips(value: number) {
+    const cur = this._chips;
+    this._chips = cur + value;
+  }
+
+  // 引数のvalue分だけスコアをマイナスするメソッド
+  protected decrementChips(value: number) {
+    const cur = this._chips;
+    this._chips = cur - value;
+  }
+
+  // 引数のvalue分Chipをマイナスできるか（０以下にならないか）
+  protected isAbleToDecrementScore(value: number): boolean {
+    return this.chips >= value;
   }
 
   public get bet(): number {
     return this._bet;
   }
 
-  public set bet(v: number) {
+  protected set bet(v: number) {
     this._bet = v;
   }
+  // betを特定額増やす関数
+  protected incrementBet(value: number) {
+    const cur = this._bet;
+    this.bet = cur + value;
+  }
+
+  // AIのBETロジックを内包、AIにベットをさせる関数
+  abstract makeAIInitialBet(): void;
 
   abstract getHandScore(): number;
   // abstract updateChips(): void;

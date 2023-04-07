@@ -1,9 +1,9 @@
 import { gameInfoWar, gameInfoBlackJack } from "./../gameInfo/gameInfo";
-import { BlackJackGameResult } from "../gameResult/gameResult";
-import { GambleGamePhase } from "../gamePhase/gamePhase";
-import { BlackJackPlayerStatus } from "../playerStatus/playerStatus";
-import { VanilaPlayer } from "../player/abstractPlayer";
-import { BlackJackPlayerType } from "../playerType/playerType";
+import { BlackjackGameResult } from "../gameResult/gameResult";
+import { BlackjackGamePhase, GambleGamePhase } from "../gamePhase/gamePhase";
+import { BlackjackPlayerStatus } from "../playerStatus/playerStatus";
+import { GamblePlayer, VanilaPlayer } from "../player/abstractPlayer";
+import { BlackjackPlayerType } from "../playerType/playerType";
 import { Deck } from "../deck/deck";
 import { GameInfo } from "../gameInfo/gameInfo";
 import { BlackjackPlayer, WarPlayer } from "../player/player";
@@ -13,7 +13,9 @@ import {
   VanilaTable,
   TurnGameTable,
 } from "./abstractTable";
+
 import { Card } from "../card/card";
+
 // ターンの概念が無いゲーム
 export class WarTable extends VanilaTable {
   private _gameInfo: GameInfo = gameInfoWar;
@@ -111,33 +113,106 @@ export class SpeedTable extends VanilaTable {}
 export class RummyTable extends TurnGameTable {}
 
 // ターンの概念があり、賭け金を要するゲーム
-export class BlackjackTable extends GambleTable {
-  private _gameInfo: GameInfo = gameInfoBlackJack;
-  private _players: BlackjackPlayer[];
-  private _house: BlackjackPlayer = new BlackjackPlayer(
-    0,
-    "house",
-    BlackJackPlayerType.AI,
-    BlackJackPlayerStatus.bet,
-    []
-  );
 
-  private _user: BlackjackPlayer;
+// Blackjackのテーブル
+export class BlackjackTable extends GambleTable {
+  readonly _gameInfo: GameInfo = gameInfoBlackJack;
+
+  protected _betDenominations: number[] = [];
+  protected _deck: Deck;
+  protected _gamePhase: BlackjackGamePhase;
+  protected _gameResult: BlackjackGameResult;
+
+  protected _players: BlackjackPlayer[];
+  protected _house: BlackjackPlayer;
 
   constructor(userName: string) {
     super();
     this._deck = new Deck(this.gameInfo);
-    this._user = new BlackjackPlayer(
-      0,
-      userName,
-      BlackJackPlayerType.USER,
-      BlackJackPlayerStatus.bet,
-      []
-    );
-    this._players = [this.house, this.user];
-    this.gamePhase = GambleGamePhase.betting;
-    this.gameResult = BlackJackGameResult.yetDecided;
-    this.betDenominations = [5, 10, 50, 100];
+    this._house = new BlackjackPlayer(0, "House", [], 200, 0, "AI", "Waiting");
+    this._players = [
+      new BlackjackPlayer(1, "AI1", [], 200, 0, "AI", "Betting"),
+      new BlackjackPlayer(2, "You", [], 200, 0, "USER", "Betting"),
+      new BlackjackPlayer(3, "AI2", [], 200, 0, "AI", "Betting"),
+    ];
+    this._gamePhase = "Betting";
+    this._gameResult = "YetDecided";
+  }
+
+  // setter,getter
+  public get gamePhase(): BlackjackGamePhase {
+    return this._gamePhase;
+  }
+  protected set gamePhase(gamePhase: BlackjackGamePhase) {
+    this._gamePhase = gamePhase;
+  }
+
+  public get gameResult(): BlackjackGameResult {
+    return this._gameResult;
+  }
+  public set gameResult(gameResult: BlackjackGameResult) {
+    this._gameResult = gameResult;
+  }
+
+  protected get players(): BlackjackPlayer[] {
+    return this._players;
+  }
+  protected set players(v: BlackjackPlayer[]) {
+    this._players = v;
+  }
+  public get gameInfo() {
+    return this._gameInfo;
+  }
+
+  public get house(): BlackjackPlayer {
+    return this._house;
+  }
+
+  // playerのアクション関連（ハウスにも使える)
+  public setPlayerHit(player: BlackjackPlayer) {
+    const card = this.deck.drawOne();
+    // カードがundefindedじゃない場合に限りアクション実行
+    if (card) player.actionHit(card);
+  }
+
+  public setPlayerStand(player: BlackjackPlayer) {
+    player.actionStand();
+  }
+
+  public setPlayerDouble(player: BlackjackPlayer) {
+    const card = this.deck.drawOne();
+    // カードがundefindedじゃない場合に限りアクション実行
+    if (card) player.actionDouble(card);
+  }
+
+  // AIの判断関連
+
+  // houseのアクション判断ロジック＆実行
+  public makeHouseAction() {
+    this.house.getHandScore() < 17
+      ? this.setPlayerHit(this.house)
+      : this.setPlayerStand(this.house);
+  }
+
+  // AIPlayerのアクション判断ロジック＆実行 とりあえずある程度チートシートに則った賢いAIのロジック
+  public makeAIInitialPlayerAction(player: BlackjackPlayer) {
+    const curScore = player.getHandScore();
+    if (curScore >= 17) this.setPlayerStand(player);
+    else if (curScore <= 9) this.setPlayerHit(player);
+    else if (curScore === 10 || curScore === 11) this.setPlayerDouble(player);
+    else {
+      const houseScore = this.house.getHandScore();
+      if (houseScore <= 6) this.setPlayerStand(player);
+      else this.setPlayerHit(player);
+    }
+  }
+
+  // Bet関連
+  // 全てのAIプレイヤーに最初のベットをさせる
+  public makeAllAIInitialBet(): void {
+    for (let player of this.players) {
+      if (player._playerType === "AI") player.makeAIInitialBet();
+    }
   }
 
   public haveTableTurn() {
@@ -246,44 +321,6 @@ export class BlackjackTable extends GambleTable {
       this.hit(player);
       this.hit(player);
     }
-  }
-
-  public hit(player: BlackjackPlayer) {
-    player.hand.push(this.deck.drawOne()!);
-  }
-
-  public stand(player: BlackjackPlayer) {
-    // player.playerStatus = BlackJackPlayerStatus.roundOver;
-  }
-
-  public get players(): BlackjackPlayer[] {
-    return this._players;
-  }
-  public set players(v: BlackjackPlayer[]) {
-    this._players = v;
-  }
-  public get gameInfo() {
-    return this._gameInfo;
-  }
-
-  public get deck(): Deck {
-    return this._deck;
-  }
-
-  public set deck(v: Deck) {
-    this._deck = v;
-  }
-
-  public get house(): BlackjackPlayer {
-    return this._house;
-  }
-
-  public get user(): BlackjackPlayer {
-    return this._user;
-  }
-
-  public set user(v: BlackjackPlayer) {
-    this._user = v;
   }
 }
 
