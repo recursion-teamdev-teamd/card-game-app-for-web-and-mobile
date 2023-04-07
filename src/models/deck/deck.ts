@@ -2,8 +2,8 @@ import { Card } from "../card/card";
 import { GameInfo } from "../gameInfo/gameInfo";
 
 export class Deck {
-  public static readonly SUITS = ["S", "H", "D", "C"];
-  public static readonly RANKS = [
+  private static readonly SUITS = ["S", "H", "D", "C"];
+  private static readonly RANKS = [
     "A",
     "2",
     "3",
@@ -18,8 +18,8 @@ export class Deck {
     "Q",
     "K",
   ];
-  public cards: Card[];
-  public GameInfo: GameInfo;
+  private cards: Card[];
+  private GameInfo: GameInfo;
 
   constructor(GameInfo: GameInfo) {
     this.cards = Deck.createDeck(GameInfo);
