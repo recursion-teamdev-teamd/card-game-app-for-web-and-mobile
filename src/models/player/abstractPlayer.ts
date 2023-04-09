@@ -1,3 +1,4 @@
+import { error } from "console";
 import { VanilaPlayerType } from "./../playerType/playerType";
 import { Card } from "../card/card";
 import { GambleTable } from "../table/abstractTable";
@@ -6,9 +7,9 @@ import { GambleTable } from "../table/abstractTable";
 export abstract class VanilaPlayer {
   private _id: number;
   private _name: string;
-
   private _hand: Card[];
-  // protected abstract _playerStatus: string;
+  protected abstract _result: string;
+  protected abstract _playerStatus: string;
   protected abstract readonly _playerType: string;
 
   constructor(id: number, name: string, hand: Card[]) {
@@ -25,7 +26,7 @@ export abstract class VanilaPlayer {
     return this._id;
   }
 
-  protected set name(v: string) {
+  public set name(v: string) {
     this._name = v;
   }
 
@@ -33,9 +34,18 @@ export abstract class VanilaPlayer {
     return this._name;
   }
 
+  abstract get playerType(): string;
+
+  abstract get playerStatus(): string;
+
+  abstract set playerStatus(v: string);
+
+  protected abstract set result(v: string);
+
+  abstract get result(): string;
   //  ↓手札関連のメソッド　//
 
-  protected get hand(): Card[] {
+  public get hand(): Card[] {
     return this._hand;
   }
 
@@ -44,11 +54,11 @@ export abstract class VanilaPlayer {
   }
 
   // カードを一枚手札に加える関数
-  protected addACardToHand(card: Card) {
+  public addACardToHand(card: Card) {
     this._hand.push(card);
   }
   // 特定のインデックスのカードを手札から除く関数
-  protected removeACardFromHand(index: number) {
+  public removeACardFromHand(index: number) {
     this._hand.splice(index, 1);
   }
 
@@ -128,14 +138,14 @@ export abstract class GamblePlayer extends VanilaPlayer {
     this._chips = cur + value;
   }
 
-  // 引数のvalue分だけスコアをマイナスするメソッド
+  // 引数のvalue分だけChipをマイナスするメソッド
   protected decrementChips(value: number) {
     const cur = this._chips;
     this._chips = cur - value;
   }
 
   // 引数のvalue分Chipをマイナスできるか（０以下にならないか）
-  protected isAbleToDecrementScore(value: number): boolean {
+  protected isAbleToDecrementChips(value: number): boolean {
     return this.chips >= value;
   }
 
@@ -146,11 +156,20 @@ export abstract class GamblePlayer extends VanilaPlayer {
   protected set bet(v: number) {
     this._bet = v;
   }
+
   // betを特定額増やす関数
-  protected incrementBet(value: number) {
-    const cur = this._bet;
-    this.bet = cur + value;
+  // protected incrementBet(value: number) {
+  //   const cur = this._bet;
+  //   this.bet = cur + value;
+  // };
+
+  // bet額に十分なChipがあるかboolで返す
+  public isAbleToBet(bet: number) {
+    return this.chips >= bet;
   }
+
+  // userのbetをセットする関数
+  abstract setUserBet(bet: number): void;
 
   // AIのBETロジックを内包、AIにベットをさせる関数
   abstract makeAIInitialBet(): void;

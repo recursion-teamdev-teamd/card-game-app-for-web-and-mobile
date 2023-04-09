@@ -12,10 +12,12 @@ export class PlayerStatus {
 
 export type BlackjackPlayerStatus =
   | "Waiting"
+  | "Playing"
   | "Betting"
   | "Hit"
   | "Stand"
   | "Double"
   | "Surrender"
   | "Bust"
-  | "DoubleBust";
+  | "DoubleBust"
+  | "Game Over";
