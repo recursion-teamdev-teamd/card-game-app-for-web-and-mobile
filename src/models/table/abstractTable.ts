@@ -11,6 +11,7 @@ export abstract class VanilaTable {
   protected abstract _deck: Deck;
   protected abstract _gameResult: string;
   protected abstract _gamePhase: string;
+  protected abstract _user: VanilaPlayer;
   protected abstract _players: VanilaPlayer[];
   protected abstract readonly _gameInfo: GameInfo;
 
@@ -21,6 +22,12 @@ export abstract class VanilaTable {
   protected set deck(deck: Deck) {
     this._deck = deck;
   }
+
+  abstract assignPlayersHand(): void;
+
+  protected abstract get user(): VanilaPlayer;
+
+  protected abstract set user(v: VanilaPlayer);
 
   protected abstract get players(): VanilaPlayer[];
 
@@ -53,6 +60,9 @@ export abstract class TurnGameTable extends VanilaTable {
   protected resetTurnCounter(): void {
     this.turnCounter = 0;
   }
+
+  // turnCounterが指すプレイヤーを返す
+  abstract getPlayerOnTurn(): VanilaPlayer;
 
   // 順番の先頭かをbooleanで返す
   public isOnTheTopPlayer(): boolean {

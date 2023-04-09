@@ -1,47 +1,26 @@
-import { PlayerField } from "./PlayerField";
-import { BlackJackGameButtons } from "./BlackJackGameButtons";
-
 import { FC } from "react";
 import React from "react";
+import { BlackjackTable } from "@/models/table/table";
+import { GamblePlayerComponent } from "@/components/common/player/GamblePlayerComponent";
 
 type Props = {
-  blackJackTable;
-  handleClickHitBtn;
-  handleClickStandBtn;
-  handleClickGameAgainBtn;
+  table: BlackjackTable;
 };
 
-export const BlackJackGameTable: FC<Props> = (props) => {
-  const {
-    blackJackTable,
-    handleClickHitBtn,
-    handleClickStandBtn,
-    handleClickGameAgainBtn,
-  } = props;
-
-  const BlackJackGameButtonsProps = {
-    blackJackTable,
-    handleClickHitBtn,
-    handleClickStandBtn,
-    handleClickGameAgainBtn,
-  };
-
-  const houseProps = { player: blackJackTable.house };
-  const userProps = { player: blackJackTable.user };
+export const BlackJackTableComponent: FC<Props> = ({ table }) => {
   return (
     <>
-      <div>
-        <div className="flex  justify-center">
-          <div className="grid grid-rows-2 grid-flow-col gap-4">
-            <div className="flex bg-cyan-500 justify-center">
-              <PlayerField {...houseProps} />
-            </div>
-            <div className="flex  justify-center">
-              <PlayerField {...userProps} />
-            </div>
-          </div>
-        </div>
-        <BlackJackGameButtons {...BlackJackGameButtonsProps} />
+      <div className="flex justify-center">
+        <GamblePlayerComponent player={table.house} />
+      </div>
+      <div className="w-full flex justify-between xl:justify-evenly px-3">
+        {table.players.map((player) => {
+          if (player.playerType === "AI")
+            return <GamblePlayerComponent player={player} key={player.name} />;
+        })}
+      </div>
+      <div className="flex justify-center">
+        <GamblePlayerComponent player={table.user} />
       </div>
     </>
   );

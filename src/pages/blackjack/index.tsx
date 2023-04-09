@@ -1,9 +1,5 @@
 import Head from "next/head";
-import { GambleGamePhase } from "@/models/gamePhase/gamePhase";
 import React from "react";
-import { useBlackJackState } from "@/hooks/games/blackjack/useBlackJack";
-import { BlackJackGamePage } from "@/components/games/blackjack/BlackJackGamePage";
-import { BlackJackBetPage } from "@/components/games/blackjack/BlackJackBetPage";
 import { BlackjackPage } from "@/components/page/BlackjackPage";
 
 export default function Blackjack() {

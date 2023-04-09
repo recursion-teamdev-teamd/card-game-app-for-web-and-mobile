@@ -6,6 +6,7 @@ export interface GameInfo {
   readonly nameJa: string;
   readonly descriptionJa: string;
   readonly descriptionEn: string;
+  readonly pathname: string;
   readonly playerNum: number;
   readonly isCardOpen: boolean; // カードが最初の時点で表向きかどうか
   readonly jokerNum: number;
@@ -24,6 +25,7 @@ export const gameInfoBlackJack: GameInfo = {
   jokerNum: 0,
   initialHand: 2,
   initialHouseHand: 1,
+  pathname: "/blackjack",
 };
 
 export const gameInfoWar: GameInfo = {
@@ -36,6 +38,7 @@ export const gameInfoWar: GameInfo = {
   jokerNum: 0,
   initialHand: 26,
   initialHouseHand: 0,
+  pathname: "/war",
 };
 
 export const gameInfoRummy: GameInfo = {
@@ -49,6 +52,7 @@ export const gameInfoRummy: GameInfo = {
   jokerNum: 0,
   initialHand: 26,
   initialHouseHand: 0,
+  pathname: "/rummy",
 };
 
 export const gameInfoSpeed: GameInfo = {
@@ -62,6 +66,7 @@ export const gameInfoSpeed: GameInfo = {
   jokerNum: 0,
   initialHand: 26,
   initialHouseHand: 0,
+  pathname: "/speed",
 };
 
 export const gameInfoPoker: GameInfo = {
@@ -75,6 +80,7 @@ export const gameInfoPoker: GameInfo = {
   jokerNum: 0,
   initialHand: 26,
   initialHouseHand: 0,
+  pathname: "/poker",
 };
 
 export const gameInfoTexasHoldemPoker: GameInfo = {
@@ -88,6 +94,7 @@ export const gameInfoTexasHoldemPoker: GameInfo = {
   jokerNum: 0,
   initialHand: 26,
   initialHouseHand: 0,
+  pathname: "/texasHold'emPoker",
 };
 
 //   ゲームの情報を

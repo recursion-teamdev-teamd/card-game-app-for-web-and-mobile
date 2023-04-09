@@ -1,5 +1,4 @@
 import { HomePage } from "@/components/page/HomePage";
-import { BasicButton } from "@/components/commonUI/atoms/buttons/BasicButton";
 import Head from "next/head";
 import React from "react";
 

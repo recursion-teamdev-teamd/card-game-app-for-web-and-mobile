@@ -32,17 +32,34 @@ export class BlackjackTable extends GambleTable {
   protected _deck: Deck;
   protected _gamePhase: BlackjackGamePhase;
   protected _gameResult: BlackjackGameResult;
-
+  protected _user: BlackjackPlayer = new BlackjackPlayer(
+    2,
+    "You",
+    [],
+    200,
+    0,
+    "USER",
+    "Betting"
+  );
   protected _players: BlackjackPlayer[];
   protected _house: BlackjackPlayer;
 
-  constructor(userName: string) {
+  constructor() {
     super();
     this._deck = new Deck(this.gameInfo);
-    this._house = new BlackjackPlayer(0, "House", [], 200, 0, "AI", "Waiting");
+
+    this._house = new BlackjackPlayer(
+      0,
+      "House",
+      [],
+      200,
+      0,
+      "HOUSE",
+      "Waiting"
+    );
     this._players = [
       new BlackjackPlayer(1, "AI1", [], 200, 0, "AI", "Betting"),
-      new BlackjackPlayer(2, "You", [], 200, 0, "USER", "Betting"),
+      this._user,
       new BlackjackPlayer(3, "AI2", [], 200, 0, "AI", "Betting"),
     ];
     this._gamePhase = "Betting";
@@ -50,6 +67,13 @@ export class BlackjackTable extends GambleTable {
   }
 
   // setter,getter
+  public get user(): BlackjackPlayer {
+    return this._user;
+  }
+  protected set user(v: BlackjackPlayer) {
+    this._user = v;
+  }
+
   public get gamePhase(): BlackjackGamePhase {
     return this._gamePhase;
   }
@@ -64,7 +88,7 @@ export class BlackjackTable extends GambleTable {
     this._gameResult = gameResult;
   }
 
-  protected get players(): BlackjackPlayer[] {
+  public get players(): BlackjackPlayer[] {
     return this._players;
   }
   protected set players(v: BlackjackPlayer[]) {
@@ -76,6 +100,43 @@ export class BlackjackTable extends GambleTable {
 
   public get house(): BlackjackPlayer {
     return this._house;
+  }
+
+  // 初期化関連
+  public setUserName(name: string) {
+    this._user.name = name;
+  }
+
+  // 初期手札を分配
+  public assignPlayersHand(): void {
+    for (let i = 0; i < this.gameInfo.initialHand; i++) {
+      for (let player of this.players) {
+        const card = this.deck.drawOne();
+        if (card) player.addACardToHand(card);
+        else console.error("There aren't any more cards.");
+      }
+    }
+  }
+  // houseに初期手札を分配
+  public assignHouseHand(): void {
+    for (let i = 0; i < this.gameInfo.initialHouseHand; i++) {
+      const card = this.deck.drawOne();
+      if (card) this.house.addACardToHand(card);
+      else console.error("There aren't any more cards.");
+    }
+  }
+
+  public initForNewGame() {
+    this.initDeck();
+    for (let player of this.players) player.initForNewGame();
+    this.house.initForNewGame();
+    this.assignPlayersHand();
+    this.assignHouseHand();
+  }
+
+  public initDeck() {
+    this.deck.resetDeck();
+    this.deck.shuffleDeck();
   }
 
   // playerのアクション関連（ハウスにも使える)
@@ -95,17 +156,42 @@ export class BlackjackTable extends GambleTable {
     if (card) player.actionDouble(card);
   }
 
+  public setPlayerSurrender(player: BlackjackPlayer) {
+    player.actionSurrender();
+  }
   // AIの判断関連
-
   // houseのアクション判断ロジック＆実行
   public makeHouseAction() {
-    this.house.getHandScore() < 17
-      ? this.setPlayerHit(this.house)
-      : this.setPlayerStand(this.house);
+    console.log("makeHouseAction");
+    while (this.house.getHandScore() < 17) this.setPlayerHit(this.house);
+  }
+  // public makeHouseAction = (): void => {
+  //   console.log("houseAction")
+  //   const currentScore = this.house.getHandScore();
+  //   const card = this.deck.drawOne();
+
+  //   if (currentScore > 16 || card === undefined) return;
+  //   else {
+  //     setTimeout(() => {
+  //       this.house.addACardToHand(card);
+  //       return this.makeHouseAction();
+  //     }, 3000);
+  //   }
+  // };
+
+  // HouseをPlayngにする
+  public setHousePlaying() {
+    this.house.setHousePlaying();
   }
 
+  // HouseがまだPlay中か判定
+  // public isHouseStillPlaying() {
+  //   return this.house.isPlayerStillPlaying();
+  // }
+
   // AIPlayerのアクション判断ロジック＆実行 とりあえずある程度チートシートに則った賢いAIのロジック
-  public makeAIInitialPlayerAction(player: BlackjackPlayer) {
+  public makeAIInitialAction(player: BlackjackPlayer) {
+    console.log(`makeAIInitialAction ${player.name}`);
     const curScore = player.getHandScore();
     if (curScore >= 17) this.setPlayerStand(player);
     else if (curScore <= 9) this.setPlayerHit(player);
@@ -117,7 +203,31 @@ export class BlackjackTable extends GambleTable {
     }
   }
 
+  // 初回以外のアクション。Doubleの処理を抜いただけ
+  public makeAIAction(player: BlackjackPlayer) {
+    console.log(`makeAIAction ${player.name}`);
+    const curScore = player.getHandScore();
+    if (curScore >= 17) this.setPlayerStand(player);
+    else if (curScore <= 9) this.setPlayerHit(player);
+    else {
+      const houseScore = this.house.getHandScore();
+      if (houseScore <= 6) this.setPlayerStand(player);
+      else this.setPlayerHit(player);
+    }
+  }
+
   // Bet関連
+  // Userがbet可能かを返す関数
+  public isUserAbleToBet(bet: number) {
+    return this._user.isAbleToBet(bet);
+  }
+
+  // userにベットさせる関数
+  public setUserBet(bet: number) {
+    this._user.setUserBet(bet);
+  }
+  // UserのBet希望額を受け取って可能であればBetする関数
+
   // 全てのAIプレイヤーに最初のベットをさせる
   public makeAllAIInitialBet(): void {
     for (let player of this.players) {
@@ -125,113 +235,67 @@ export class BlackjackTable extends GambleTable {
     }
   }
 
-  public haveTableTurn() {
-    for (let player of this.players) this.havePlayerTurn(player);
-    if (this.isRoundOver()) {
-      this.setGameResult();
-      this.gamePhase = GambleGamePhase.roundOver;
-      this.processAfterRoundOver();
-    }
-    if (
-      this.user.playerStatus == BlackJackPlayerStatus.roundOver &&
-      this.gameResult == BlackJackGameResult.yetDecided
-    ) {
-      this.haveTableTurn();
-    }
+  // ターン関連
+  public getPlayerOnTurn(): BlackjackPlayer {
+    return this.players[this.turnCounter];
   }
 
-  public havePlayerTurn(player: BlackjackPlayer) {
-    console.log("havePlayerTurn", player.name, player.playerStatus);
-    if (player.playerStatus == BlackJackPlayerStatus.roundOver) return;
-
-    if (player.playerType != BlackJackPlayerType.USER)
-      player.playerStatus = this.decidePlayerStatus(player);
-
-    if (player.playerStatus == BlackJackPlayerStatus.hit) {
-      this.hit(player);
-      player.playerStatus = BlackJackPlayerStatus.waiting;
-    }
-
-    if (player.playerStatus == BlackJackPlayerStatus.stand) {
-      this.stand(player);
-      player.playerStatus = BlackJackPlayerStatus.roundOver;
-    }
-
-    if (player.isGameOver() || player.isBlackJack())
-      player.playerStatus = BlackJackPlayerStatus.roundOver;
-    console.log("res", player.name, player.playerStatus);
-  }
-
-  public isRoundOver(): boolean {
-    if (this.house.isGameOver()) return true;
-    if (this.user.isGameOver()) return true;
-    if (this.house.isBlackJack()) return true;
-    if (this.user.isBlackJack()) return true;
+  // 全てのプレイヤーのアクションが終了しているかどうか
+  public isAllPlayerActionDone(): boolean {
     for (let player of this.players) {
-      if (player.playerStatus != BlackJackPlayerStatus.roundOver) return false;
+      // 一人でもまだプレー中であればfalseを返す
+      if (player.isPlayerStillPlaying()) return false;
     }
     return true;
   }
 
-  public decidePlayerStatus(player: BlackjackPlayer) {
-    if (player.playerStatus == BlackJackPlayerStatus.roundOver)
-      return player.playerStatus;
-    if (player.getHandScore() >= 17) return BlackJackPlayerStatus.stand;
-    return BlackJackPlayerStatus.hit;
+  // result関連
+
+  // player全てのresultを決める
+  public setResultForAllPlayer() {
+    for (let player of this.players) this.setResultForAPlayer(player);
   }
 
-  public setGameResult() {
-    const house = this.house;
-    const user = this.user;
+  // Player一人のresultを決める
+  public setResultForAPlayer = (player: BlackjackPlayer): void => {
+    const playerStatus = player.playerStatus;
+    const houseStatus = this.house.playerStatus;
+    const playerBet = player.bet;
 
-    if (user.getHandScore() > house.getHandScore())
-      this.gameResult = BlackJackGameResult.win;
-    else if (user.getHandScore() == house.getHandScore())
-      this.gameResult = BlackJackGameResult.push;
-    else this.gameResult = BlackJackGameResult.lose;
-
-    if (
-      (house.isBlackJack() && user.isBlackJack()) ||
-      (house.isGameOver() && user.isGameOver())
-    )
-      this.gameResult = BlackJackGameResult.push;
-
-    if (house.isBlackJack()) this.gameResult = BlackJackGameResult.lose;
-    if (user.isBlackJack()) this.gameResult = BlackJackGameResult.win;
-    if (house.isGameOver()) this.gameResult = BlackJackGameResult.win;
-    if (user.isGameOver()) this.gameResult = BlackJackGameResult.lose;
-    console.log(this.gameResult);
-  }
-
-  public processAfterRoundOver() {
-    if (this.gameResult == BlackJackGameResult.win) {
-      if (this.user.isBlackJack())
-        this.user.chips += Math.floor(this.user.bet * 1.5);
-      else this.user.chips += this.user.bet;
+    if (playerStatus === "Surrender") {
+      player.resultLose(playerBet / 2);
     }
-    if (this.gameResult == BlackJackGameResult.lose)
-      this.user.chips -= this.user.bet;
-  }
-
-  public initTableForNewGame() {
-    this.initDeck();
-    this.gameResult = BlackJackGameResult.yetDecided;
-    this.gamePhase = GambleGamePhase.betting;
-    for (let player of this.players) player.initForNewGame();
-    this.assignPlayersHand();
-  }
-
-  public initDeck() {
-    this.deck.resetDeck();
-    this.deck.shuffleDeck();
-  }
-
-  public assignPlayersHand() {
-    for (let player of this.players) {
-      this.hit(player);
-      this.hit(player);
+    // PlayerがBustの時
+    else if (playerStatus === "Bust" || playerStatus === "DoubleBust") {
+      // houseもBustならDraw
+      if (houseStatus === "Bust") player.resultDraw();
+      else {
+        const decrementAmount =
+          playerStatus === "Bust" ? playerBet : playerBet * 2;
+        player.resultLose(decrementAmount);
+      }
+    } else {
+      const houseScore = this.house.getHandScore();
+      const playerScore = player.getHandScore();
+      const isPlayerBlackjack = player.isBlackjack();
+      const isHouseBlackjack = this.house.isBlackjack();
+      if (houseStatus === "Bust" || houseScore < playerScore) {
+        const incrementAmount = isPlayerBlackjack
+          ? playerBet * 1.5
+          : playerStatus === "Double"
+          ? playerBet * 2
+          : playerBet;
+        player.resultWin(incrementAmount);
+      } else if (isHouseBlackjack || playerScore < houseScore) {
+        if (isPlayerBlackjack) player.resultDraw();
+        else {
+          const decrementAmount =
+            playerStatus === "Double" ? playerBet * 2 : playerBet;
+          player.resultLose(decrementAmount);
+        }
+      }
     }
-  }
+  };
 }
 
 // ポーカー系のゲーム
