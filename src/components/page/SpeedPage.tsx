@@ -1,11 +1,11 @@
 import React from "react";
 import { GamePageLayout } from "../common/ui/layout/GamePageLayout";
-import { SpeedTable } from "../games/speed/SpeedTable";
+import { SpeedTableComponent } from "../games/speed/SpeedTableComponent";
 
 export const SpeedPage = () => {
   return (
     <GamePageLayout>
-      <SpeedTable />
+      <SpeedTableComponent />
     </GamePageLayout>
   );
 };
