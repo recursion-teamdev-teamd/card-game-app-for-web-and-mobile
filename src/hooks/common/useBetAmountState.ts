@@ -7,10 +7,12 @@ export const useBetAmountState = () => {
   const betAmountArr = [5, 20, 50, 100];
 
   const handleClickBetPlusBtn = (betAmountInput: number) => {
+    console.log("bet plus");
     setTotalBetAmount((totalBetAmount) => totalBetAmount + betAmountInput);
   };
 
   const handleClickBetMinusBtn = (betAmountInput: number) => {
+    console.log("bet minus");
     totalBetAmount >= betAmountInput &&
       setTotalBetAmount((totalBetAmount) => totalBetAmount - betAmountInput);
   };

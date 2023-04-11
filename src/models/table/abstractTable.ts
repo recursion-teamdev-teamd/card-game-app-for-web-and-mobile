@@ -1,3 +1,4 @@
+import { PlayerStatus } from "./../playerStatus/playerStatus";
 import { Deck } from "../deck/deck";
 import { GameInfo } from "../gameInfo/gameInfo";
 import {
@@ -7,67 +8,94 @@ import {
 } from "../player/abstractPlayer";
 
 export abstract class VanilaTable {
-  abstract _gameInfo: GameInfo;
-  abstract _deck: Deck;
-  abstract _players: VanilaPlayer[];
-  abstract _gamePhase: string;
-  abstract _gameResult: string;
+  protected abstract _deck: Deck;
+  protected abstract _gameResult: string;
+  protected abstract _gamePhase: string;
+  protected abstract _user: VanilaPlayer;
+  protected abstract _players: VanilaPlayer[];
+  protected abstract readonly _gameInfo: GameInfo;
 
-  public set deck(deck: Deck) {
+  public get deck() {
+    return this._deck;
+  }
+
+  protected set deck(deck: Deck) {
     this._deck = deck;
   }
 
-  public get gameResult(): string {
-    return this._gameResult;
-  }
+  abstract assignPlayersHand(): void;
 
-  public set gameResult(gameResult: string) {
-    this._gameResult = gameResult;
-  }
+  protected abstract get user(): VanilaPlayer;
 
-  public get gamePhase(): string {
-    return this._gamePhase;
-  }
+  protected abstract set user(v: VanilaPlayer);
 
-  public set gamePhase(v: string) {
-    this._gamePhase = v;
-  }
+  protected abstract get players(): VanilaPlayer[];
+
+  protected abstract set players(players: VanilaPlayer[]);
+
+  public abstract get gameResult();
+
+  protected abstract set gameResult(gameResult: string);
+
+  public abstract get gamePhase();
+
+  protected abstract set gamePhase(gamePhase: string);
 }
 
 export abstract class TurnGameTable extends VanilaTable {
-  protected turnCounter: number = 0;
-  protected getTurnCounter = () => this.turnCounter;
-  protected setTurnCounter = (turnCounter: number) =>
-    (this.turnCounter = turnCounter);
+  // ターンのインデックスを追うカウンタ
+  private _turnCounter: number = 0;
+  public get turnCounter(): number {
+    return this._turnCounter;
+  }
+  protected set turnCounter(v: number) {
+    this._turnCounter = v;
+  }
 
+  // turnCounterを＋１するメソッド
   protected inclementTurnCounter(): void {
-    this.setTurnCounter(this.getTurnCounter() + 1);
+    this.turnCounter = this.turnCounter + 1;
+  }
+  // turnCounterを０にするメソッド
+  protected resetTurnCounter(): void {
+    this.turnCounter = 0;
   }
 
-  protected onLastPlayer(player: VanilaPlayer): boolean {
-    if (player == this.players[this.players.length - 1]) return true;
-    return false;
+  // turnCounterが指すプレイヤーを返す
+  abstract getPlayerOnTurn(): VanilaPlayer;
+
+  // 順番の先頭かをbooleanで返す
+  public isOnTheTopPlayer(): boolean {
+    return this.turnCounter === 0;
+  }
+  // turnCounterが順番の最後にあるか、booleanで返す
+  public isOnTheLastPlayer(): boolean {
+    return this.turnCounter === this.players.length - 1;
   }
 
-  public get players(): VanilaPlayer[] {
-    return this._players;
-  }
-  public set players(playerStatus: VanilaPlayer[]) {
-    this._players = playerStatus;
+  // turnを次のプレイヤーに回すメソッド
+  public moveOnToNextPlayer(): void {
+    // 順番の末尾にいたらカウンターをゼロに戻す
+    if (this.isOnTheLastPlayer()) this.resetTurnCounter();
+    else this.inclementTurnCounter();
   }
 }
 
 export abstract class GambleTable extends TurnGameTable {
-  abstract _betDenominations: number[];
-  abstract hit(player: VanilaPlayer): void;
+  protected abstract _betDenominations: number[];
+
+  public abstract setPlayerHit(player: GamblePlayer): void;
 
   public get betDenominations(): number[] {
     return this._betDenominations;
   }
 
-  public set betDenominations(betDenominations: number[]) {
+  protected set betDenominations(betDenominations: number[]) {
     this._betDenominations = betDenominations;
   }
+
+  // 全てのAIに最初のBetを選択させる関数　とりあえずAbstaractにしてます
+  protected abstract makeAllAIInitialBet(): void;
 }
 
 export abstract class AbstractPokerTable extends GambleTable {

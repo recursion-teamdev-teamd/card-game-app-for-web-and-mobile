@@ -1,10 +1,15 @@
 import { CardComponent } from "@/components/common/card/CardComponent";
 import { CardsOverLap } from "@/components/common/card/CardsOverLap";
 import { Card } from "@/models/card/card";
-import React from "react";
+import { WarTable } from "@/models/table/table";
+import React, { useState } from "react";
 import { WarPlayerComponent } from "./WarPlayerComponent";
 
 export const WarTableComponent = () => {
+  // const [table,setTable] = useState(new WarTable())
+
+  const [gamePhase, setGamePhase] = useState();
+
   return (
     <>
       <div className="relative h-[30%] w-full">

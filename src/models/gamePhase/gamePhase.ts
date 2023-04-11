@@ -16,4 +16,11 @@ export class GambleGamePhase extends GamePhase {
 export class ScoreGamePhase extends GamePhase {
   static readonly acting: string = "acting";
 }
+
+export type BlackjackGamePhase =
+  | "Betting"
+  | "PlayerAction"
+  | "HouseAction"
+  | "Result";
+
 export type SpeedGamePhase = "roundOver" | "acting" | "firstRound";

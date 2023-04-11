@@ -16,7 +16,11 @@ export class WarGameResult extends GameResult {
   static readonly draw: string = "draw";
 }
 
-export class BlackJackGameResult extends GameResult {
-  static readonly push: string = "push";
-}
+export type BlackjackGameResult =
+  | "Win"
+  | "Lose"
+  | "Draw"
+  | "YetDecided"
+  | "Game Over";
+
 export type SpeedGameResult = "win" | "lose" | "yetDecided";

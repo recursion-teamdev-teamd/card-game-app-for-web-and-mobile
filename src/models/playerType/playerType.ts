@@ -1,10 +1,5 @@
-export class PlayerType {
-  static readonly USER: string = "USER";
-}
+export type VanilaPlayerType = "USER" | "AI";
 
-export class BlackJackPlayerType extends PlayerType {
-  static readonly AI: string = "AI";
-  static readonly HOUSE: string = "HOUSE";
-}
+export type BlackjackPlayerType = VanilaPlayerType | "HOUSE";
 
 export type SpeedPlayerType = "ai" | "user";

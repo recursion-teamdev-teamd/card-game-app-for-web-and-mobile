@@ -27,14 +27,14 @@ export const BetAmountHandler: FC<Props> = ({ handleClickBetSubmitBtn }) => {
               <BasicButton
                 buttonType="blue"
                 mediaQueries="py-1 px-2"
-                onClick={() => handleClickBetMinusBtn(betAmount)}
+                onClick={() => handleClickBetPlusBtn(betAmount)}
               >
                 ＋
               </BasicButton>
               <BasicButton
                 buttonType="red"
                 mediaQueries="py-1 px-2"
-                onClick={() => handleClickBetPlusBtn(betAmount)}
+                onClick={() => handleClickBetMinusBtn(betAmount)}
               >
                 ー
               </BasicButton>
