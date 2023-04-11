@@ -9,3 +9,5 @@ export class BlackJackPlayerStatus extends PlayerStatus {
   static readonly stand: string = "stand";
   static readonly waiting: string = "waiting";
 }
+
+export type SpeedPlayerStatus = "roundOver" | "acting";

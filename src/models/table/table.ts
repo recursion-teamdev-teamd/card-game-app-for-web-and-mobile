@@ -1,12 +1,22 @@
-import { gameInfoWar, gameInfoBlackJack } from "./../gameInfo/gameInfo";
+import { SpeedGamePhase } from "../gamePhase/gamePhase";
+import { SpeedPlayerType } from "../playerType/playerType";
+import { SpeedGameResult } from "../gameResult/gameResult";
+import {
+  gameInfoWar,
+  gameInfoBlackJack,
+  gameInfoSpeed,
+} from "./../gameInfo/gameInfo";
 import { BlackJackGameResult } from "../gameResult/gameResult";
 import { GambleGamePhase } from "../gamePhase/gamePhase";
-import { BlackJackPlayerStatus } from "../playerStatus/playerStatus";
+import {
+  BlackJackPlayerStatus,
+  SpeedPlayerStatus,
+} from "../playerStatus/playerStatus";
 import { VanilaPlayer } from "../player/abstractPlayer";
-import { BlackJackPlayerType } from "../playerType/playerType";
+import { BlackJackPlayerType, PlayerType } from "../playerType/playerType";
 import { Deck } from "../deck/deck";
 import { GameInfo } from "../gameInfo/gameInfo";
-import { BlackjackPlayer, WarPlayer } from "../player/player";
+import { BlackjackPlayer, SpeedPlayer, WarPlayer } from "../player/player";
 import {
   AbstractPokerTable,
   GambleTable,
@@ -94,11 +104,75 @@ export class WarTable extends VanilaTable {
 }
 
 export class SpeedTable extends VanilaTable {
-  private _gameInfo: GameInfo;
+  private _gameInfo: GameInfo = gameInfoSpeed;
+  private _players: SpeedPlayer[];
+  private _user: SpeedPlayer;
+  private _house: SpeedPlayer;
   private _deck: Deck;
-  private _players: VanilaPlayer[];
-  private _gamePhase: string;
-  private _gameResult: string;
+  private _gamePhase: SpeedGamePhase;
+  private _gameResult: SpeedGameResult;
+
+  constructor(userName: string) {
+    super();
+    this._user = new SpeedPlayer(0, userName, "user", "roundOver", []);
+    this._house = new SpeedPlayer(1, "house", "ai", "roundOver", []);
+    this._players = [this.user, this.house];
+    this._deck = new Deck(this._gameInfo);
+    this._gamePhase = "firstRound";
+    this._gameResult = "yetDecided";
+  }
+
+  public initTableForNewGame() {
+    this.deck.resetDeck();
+    this.deck.shuffleDeck();
+    this._gamePhase = "roundOver";
+    this._gameResult = "yetDecided";
+  }
+  public assignPlayersHand() {
+    const deckCardLength = this.deck.cards.length;
+    for (let index = 0; index < deckCardLength / 2; index++) {
+      this.user.hand.push(this.deck.drawOne()!);
+      this.house.hand.push(this.deck.drawOne()!);
+    }
+  }
+
+  public get gamePhase(): SpeedGamePhase {
+    return this._gamePhase;
+  }
+
+  public set gamePhase(v: SpeedGamePhase) {
+    this._gamePhase = v;
+  }
+
+  public get players(): SpeedPlayer[] {
+    return this._players;
+  }
+  public set players(v: SpeedPlayer[]) {
+    this._players = v;
+  }
+  public get gameInfo() {
+    return this._gameInfo;
+  }
+
+  public get deck(): Deck {
+    return this._deck;
+  }
+
+  public set deck(v: Deck) {
+    this._deck = v;
+  }
+
+  public get house(): SpeedPlayer {
+    return this._house;
+  }
+
+  public get user(): SpeedPlayer {
+    return this._user;
+  }
+
+  public set user(v: SpeedPlayer) {
+    this._user = v;
+  }
 }
 
 // ターンの概念があり、賭け金がいらないゲーム
