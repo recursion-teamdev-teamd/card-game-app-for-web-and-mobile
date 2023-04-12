@@ -22,3 +22,5 @@ export type BlackjackGamePhase =
   | "PlayerAction"
   | "HouseAction"
   | "Result";
+
+export type SpeedGamePhase = "roundOver" | "acting" | "firstRound";

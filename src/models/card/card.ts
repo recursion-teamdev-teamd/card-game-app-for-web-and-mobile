@@ -50,6 +50,13 @@ export class Card {
     } else if (this.rank === "A") return 11;
     else return parseInt(this.rank);
   }
+  public getRankNumberInSpeed(): number {
+    if (this.rank == "A") return 1;
+    if (this.rank == "J") return 11;
+    if (this.rank == "Q") return 12;
+    if (this.rank == "K") return 13;
+    return parseInt(this.rank);
+  }
 
   public isAce() {
     if (this.rank == "A") return true;

@@ -71,7 +71,6 @@ export abstract class VanilaPlayer {
 
 // スコア制ゲームのPlayer
 export abstract class ScoreGamePlayer extends VanilaPlayer {
-
   private _score: number;
 
   constructor(id: number, name: string, hand: Card[], score: number) {
