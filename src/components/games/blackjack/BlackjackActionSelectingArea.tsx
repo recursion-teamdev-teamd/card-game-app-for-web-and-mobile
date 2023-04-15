@@ -1,6 +1,7 @@
 import { BasicButton } from "@/components/common/ui/atoms/buttons/BasicButton";
 import { BlackjackGamePhase } from "@/models/gamePhase/gamePhase";
-import { BlackjackTable } from "@/models/table/table";
+import { BlackjackTable } from "@/models/table/blackjackTable";
+
 import Link from "next/link";
 import { FC } from "react";
 import { BlackjackUserActionComponent } from "./BlackjackUserActionComponent";

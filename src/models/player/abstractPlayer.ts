@@ -62,6 +62,20 @@ export abstract class VanilaPlayer {
     this._hand.splice(index, 1);
   }
 
+  public getACardFromHand(index: number) {
+    return this._hand[index];
+  }
+
+  public popACardFromHand(index: number) {
+    const card = this.getACardFromHand(index);
+    this.removeACardFromHand(index);
+    return card;
+  }
+  // sort
+  public sortHand() {
+    Card.sortCards(this.hand);
+  }
+
   //  ↑手札関連のメソッドここまで　//
 
   // abstract get playerStatus()
@@ -71,7 +85,6 @@ export abstract class VanilaPlayer {
 
 // スコア制ゲームのPlayer
 export abstract class ScoreGamePlayer extends VanilaPlayer {
-
   private _score: number;
 
   constructor(id: number, name: string, hand: Card[], score: number) {

@@ -62,7 +62,7 @@ export abstract class TurnGameTable extends VanilaTable {
   }
 
   // turnCounterが指すプレイヤーを返す
-  abstract getPlayerOnTurn(): VanilaPlayer;
+  // abstract getPlayerOnTurn(): VanilaPlayer;
 
   // 順番の先頭かをbooleanで返す
   public isOnTheTopPlayer(): boolean {

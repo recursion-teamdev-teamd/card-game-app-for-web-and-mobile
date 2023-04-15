@@ -10,6 +10,8 @@ export class PlayerStatus {
 //   static readonly waiting: string = "waiting";
 // };
 
+export type VanilaPlayerStatus = "Playing";
+
 export type BlackjackPlayerStatus =
   | "Waiting"
   | "Playing"

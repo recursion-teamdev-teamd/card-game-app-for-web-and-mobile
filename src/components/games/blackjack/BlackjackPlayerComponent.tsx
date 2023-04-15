@@ -1,5 +1,6 @@
 import { PlayerNameAndHand } from "@/components/common/player/PlayerNameAndHand";
-import { BlackjackPlayer } from "@/models/player/player";
+import { BlackjackPlayer } from "@/models/player/blackjackPlayer";
+
 import { FC } from "react";
 
 export type BlackjackPlayerComponentProps = {
