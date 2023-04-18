@@ -32,7 +32,10 @@ export class RummyPlayer extends ScoreGamePlayer {
 
   static createRandomAIPlayer() {
     const id = Math.floor(Math.random() * 100);
-    const name = `AI${id}`;
+    const name =
+      this.cpuNamePatterns[
+        Math.floor(Math.random() * this.cpuNamePatterns.length)
+      ];
     return new RummyPlayer(id, name, [], 0, "AI");
   }
   get playerType(): VanilaPlayerType {
@@ -44,7 +47,7 @@ export class RummyPlayer extends ScoreGamePlayer {
   protected set playerStatus(v: VanilaPlayerStatus) {
     this.playerStatus = v;
   }
-  protected set result(v: VanilaGameResult) {
+  public set result(v: VanilaGameResult) {
     this._result = v;
   }
   public get result(): VanilaGameResult {
@@ -150,7 +153,11 @@ export class RummyPlayer extends ScoreGamePlayer {
     for (let card of this.hand) {
       score -= card.getRankNumberInRummy();
     }
-    return score;
+    this.decrementScore(score);
+  }
+  // ラウンド終了か確認
+  public isRoundOver() {
+    return this.hand.length === 0;
   }
   // ゲームオーバーか判定
   public isGameOver() {

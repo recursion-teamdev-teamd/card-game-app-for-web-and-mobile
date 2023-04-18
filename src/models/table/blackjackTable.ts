@@ -83,9 +83,6 @@ export class BlackjackTable extends GambleTable {
   }
 
   // 初期化関連
-  public setUserName(name: string) {
-    this._user.name = name;
-  }
 
   // 初期手札を分配
   public assignPlayersHand(): void {

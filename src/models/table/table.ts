@@ -97,9 +97,6 @@ export class WarTable extends VanilaTable {
 
 export class SpeedTable extends VanilaTable {}
 
-// ターンの概念があり、賭け金がいらないゲーム
-export class RummyTable extends TurnGameTable {}
-
 // ポーカー系のゲーム
 export class PokerTable extends AbstractPokerTable {}
 

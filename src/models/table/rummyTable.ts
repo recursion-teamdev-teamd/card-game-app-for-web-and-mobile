@@ -18,24 +18,27 @@ export class RummyTable extends TurnGameTable {
   protected _gameInfo: GameInfo = gameInfoRummy;
   protected _meldArea: Card[][] = [];
   protected _discardArea: Card[] = [];
+  protected _round: number = 0;
 
   constructor() {
     super();
     this._deck = new Deck(gameInfoRummy);
     this._user = RummyPlayer.createUserPlayer();
-    this._players = Array(this._gameInfo.playerNum).fill(
-      RummyPlayer.createRandomAIPlayer()
-    );
+    this._players = [
+      RummyPlayer.createRandomAIPlayer(),
+      RummyPlayer.createRandomAIPlayer(),
+      RummyPlayer.createRandomAIPlayer(),
+    ];
     this._players.push(this._user);
   }
 
-  protected get user(): RummyPlayer {
+  public get user(): RummyPlayer {
     return this._user;
   }
   protected set user(v: RummyPlayer) {
     this._user = v;
   }
-  protected get players(): RummyPlayer[] {
+  public get players(): RummyPlayer[] {
     return this._players;
   }
   protected set players(players: RummyPlayer[]) {
@@ -70,17 +73,49 @@ export class RummyTable extends TurnGameTable {
     this._discardArea = v;
   }
 
+  public get round() {
+    return this._round;
+  }
+
+  protected set round(v: number) {
+    this._round = v;
+  }
+
   public getPlayerOnTurn(): RummyPlayer {
     return this.players[this.turnCounter];
   }
 
   public assignPlayersHand(): void {
     for (let player of this.players) {
+      if (player.hand.length !== 0) player.resetHand();
       for (let i = 0; i < this._gameInfo.initialHand; i++) {
         let card = this._deck.drawOne();
-        if (card) player.addACardToHand(card);
+        if (card) {
+          player.playerType === "USER" && card.open();
+          player.addACardToHand(card);
+        }
       }
     }
+  }
+
+  // 初期化関連
+
+  // 新しいラウンド
+  public initForNewRound() {
+    this._round = this._round + 1;
+    this.deck.resetDeck();
+    this.deck.shuffleDeck();
+    if (this._meldArea.length > 0) this._meldArea = [];
+    if (this._discardArea.length > 0) this._discardArea = [];
+    const card = this.deck.drawOne();
+    card && this.pushToDisCardArea(card);
+  }
+
+  // 新しいゲーム
+  public initForNewGame() {
+    this._round = 0;
+    for (const player of this.players) player.resetScoreToZero();
+    this.initForNewRound();
   }
 
   //   捨て札関連
@@ -91,7 +126,9 @@ export class RummyTable extends TurnGameTable {
   }
   // 捨て札の頂点の値取得
   public peekOfDiscardArea() {
-    return this._discardArea[0];
+    const card = this._discardArea[0];
+    if (card) card.open();
+    return card;
   }
 
   // 捨て札からカード取得
@@ -200,39 +237,45 @@ export class RummyTable extends TurnGameTable {
 
   // 再帰でメルドし続ける
   public aiActionMeld(player: RummyPlayer): void {
+    console.log("aiActionMeld");
     // 同じランクのカード三枚以上があれば
     const sameRankPairIndexes = player.getSameRankPairIndexes();
     const consecutivePairIndexes = player.getConsecutivePairIndexes();
-
-    // ペアの配列の長さが2以上であればペアがあることを意味する
-    if (sameRankPairIndexes.length > 2) {
-      const sameRankPair = player.popAPairFromHands(sameRankPairIndexes);
-      this.pushToMeldArea(sameRankPair);
-    }
-
-    // ペアの配列の長さが2以上であればペアがあることを意味する
-    if (consecutivePairIndexes.length > 2) {
-      const consecutivePair = player.popAPairFromHands(consecutivePairIndexes);
-      // メルドエリアの既存ペアにくっつけられるかチェック
-      for (let i = 0; i < this.meldArea.length; i++) {
-        // くっつけられる場合はin-placeでくっつけた新しいカード配列をメルドエリアに差し込める
-        if (
-          this.isAbleToConnectAPairConsecutively(
-            this.meldArea[i],
-            consecutivePair
-          )
-        ) {
-          const newPair = this.connectAPairConsecutively(
-            this.meldArea[i],
-            consecutivePair
-          );
-          this.meldArea[i] = newPair;
-          // 新規メルドはせずに処理終了
-          return;
-        }
+    if (this.isAbleToAiActionMeld(player)) {
+      // ペアの配列の長さが2以上であればペアがあることを意味する
+      if (sameRankPairIndexes.length > 2) {
+        const sameRankPair = player.popAPairFromHands(sameRankPairIndexes);
+        console.log(sameRankPair);
+        this.pushToMeldArea(sameRankPair);
       }
-      this.pushToMeldArea(consecutivePair);
-    }
+
+      // ペアの配列の長さが2以上であればペアがあることを意味する
+      if (consecutivePairIndexes.length > 2) {
+        const consecutivePair = player.popAPairFromHands(
+          consecutivePairIndexes
+        );
+        // メルドエリアの既存ペアにくっつけられるかチェック
+        for (let i = 0; i < this.meldArea.length; i++) {
+          // くっつけられる場合はin-placeでくっつけた新しいカード配列をメルドエリアに差し込める
+          if (
+            this.isAbleToConnectAPairConsecutively(
+              this.meldArea[i],
+              consecutivePair
+            )
+          ) {
+            const newPair = this.connectAPairConsecutively(
+              this.meldArea[i],
+              consecutivePair
+            );
+            this.meldArea[i] = newPair;
+            // 新規メルドはせずに処理終了
+            return this.aiActionMeld(player);
+          }
+        }
+        this.pushToMeldArea(consecutivePair);
+      }
+      return this.aiActionMeld(player);
+    } else return;
   }
 
   public aiActionAddToExsitingPair(player: RummyPlayer) {
@@ -256,11 +299,6 @@ export class RummyTable extends TurnGameTable {
     card && this.pushToDisCardArea(card);
   }
 
-  // ゲーム終了かどうか判定
-  public isPlayerRoundOver(player: RummyPlayer) {
-    return player.hand.length === 0;
-  }
-
   public setScoreForAllPlayers() {
     for (const player of this.players) player.decideScore();
   }
@@ -270,5 +308,15 @@ export class RummyTable extends TurnGameTable {
       if (player.score <= -100) return true;
     }
     return true;
+  }
+
+  public setResultForAllPlayers() {
+    let curWinner = 0;
+    for (let i = 1; i < this.players.length; i++) {
+      if (this.players[curWinner].score < this.players[i].score) curWinner = i;
+    }
+    for (let i = 0; i < this.players.length; i++) {
+      this.players[i].result = i === curWinner ? "Win" : "Lose";
+    }
   }
 }
