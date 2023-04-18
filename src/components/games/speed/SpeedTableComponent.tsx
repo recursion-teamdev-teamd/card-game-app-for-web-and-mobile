@@ -1,11 +1,13 @@
 import React from "react";
+import { SpeedTable } from "@/models/table/table";
 import { useState, useEffect } from "react";
 import _ from "lodash";
 import { Card } from "@/models/card/card";
 import { BasicButton } from "@/components/common/ui/atoms/buttons/BasicButton";
 import Image from "next/image";
 import { v4 } from "uuid";
-
+import ReactDOM from "react-dom";
+import Modal from "react-modal";
 type CardsFieldProps = { cards: Card[]; handleClickCard };
 
 const CardsField: React.FC<CardsFieldProps> = (props) => {
@@ -25,19 +27,21 @@ const CardsField: React.FC<CardsFieldProps> = (props) => {
           <Image
             src={card.imgUrl}
             alt="picture"
-            width={200}
-            height={100}
+            width={100}
+            height={150}
             key={key}
             onClick={() => handleClickCard(card)}
+            className="m-5 py-3"
           />
         ) : (
           <Image
             src={hiddenImgUrl}
             alt="picture"
-            width={200}
-            height={100}
+            width={100}
+            height={10}
             key={key}
             onClick={() => handleClickCard(card)}
+            className="m-5 py-3"
           />
         );
       })}
@@ -62,17 +66,18 @@ const StrageField: React.FC<StrageFieldProps> = (props) => {
           <Image
             src={card.imgUrl}
             alt="picture"
-            width={200}
-            height={100}
+            width={100}
+            height={150}
             key={key}
             onClick={() => handleClickCardInStrages(index, card)}
+            className="mx-5"
           />
         ) : (
           <Image
             src={hiddenImgUrl}
             alt="picture"
-            width={200}
-            height={100}
+            width={100}
+            height={150}
             key={key}
             onClick={() => handleClickCardInStrages(index, card)}
           />
@@ -104,33 +109,73 @@ export const SpeedTableComponent: React.FC<SpeedTableComponentProps> = (
     executeHouseAction,
   } = props;
 
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
   useEffect(() => {
-    const interval = setInterval(() => {
+    const houseActionInterval = setInterval(() => {
       executeHouseAction();
     }, 3000);
 
-    return () => clearInterval(interval);
+    const modalInterval = setInterval(() => {
+      if (
+        (speedTable.user.hand.length <= 0 ||
+          speedTable.house.hand.length <= 0) &&
+        speedTable.gamePhase == "roundOver"
+      )
+        setIsModalOpen(true);
+    }, 500);
+    return () => {
+      clearInterval(houseActionInterval);
+      clearInterval(modalInterval);
+    };
   });
+
+  const customStyles = {
+    content: {
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+    },
+  };
 
   return (
     <>
-      <div>{speedTable.gamePhase}</div>
       <div className="flex  justify-center">
-        <div className="grid grid-rows-3 grid-flow-col gap-4">
-          {speedTable.gamePhase == "firstRound" && (
-            <BasicButton
-              buttonType="yellow"
-              onClick={hancleClickGameStartBtn}
-              mediaQueries="flex justify-center"
+        {speedTable.gamePhase == "firstRound" && (
+          <BasicButton
+            buttonType="yellow"
+            onClick={hancleClickGameStartBtn}
+            mediaQueries="flex justify-center "
+          >
+            gamestart
+          </BasicButton>
+        )}
+
+        <div className="flex grid grid-rows-4  gap-4">
+          <Modal
+            isOpen={isModalOpen}
+            contentLabel="again btn modal"
+            style={customStyles}
+          >
+            <button
+              onClick={() => {
+                setIsModalOpen(false);
+                hancleClickGameStartBtn();
+              }}
             >
-              gamestart
-            </BasicButton>
-          )}
+              next game
+            </button>
+          </Modal>
+
           {(speedTable.gamePhase == "acting" ||
             speedTable.gamePhase == "roundOver") && (
-            <div>
+            <div className="">
+              {}
+
               <div className="flex justify-center">
-                <div>house</div>
                 <CardsField
                   cards={speedTable.house.hand}
                   handleClickCard={handleClickCard}
@@ -138,57 +183,30 @@ export const SpeedTableComponent: React.FC<SpeedTableComponentProps> = (
               </div>
 
               <div className="flex justify-center">
-                <div>strage</div>
-                {speedTable.house.hand.length > 0 ? (
-                  <StrageField
-                    cardsInStrages={cardsInStrages}
-                    handleClickCardInStrages={handleClickCardInStrages}
-                  />
-                ) : (
-                  <div>
-                    <div> you lose</div>
-                    <BasicButton
-                      buttonType="yellow"
-                      onClick={hancleClickGameStartBtn}
-                      mediaQueries="flex justify-center"
-                    >
-                      try again
-                    </BasicButton>
-                  </div>
-                )}
+                <StrageField
+                  cardsInStrages={cardsInStrages}
+                  handleClickCardInStrages={handleClickCardInStrages}
+                />
               </div>
 
-              <div className="flex  justify-center">
-                <div>user</div>
-                {speedTable.user.hand.length > 0 ? (
-                  <div className="flex justify-center">
-                    <CardsField
-                      cards={speedTable.user.hand}
-                      handleClickCard={handleClickCard}
-                    />
-                    <div>click to restart</div>
-                    <Image
-                      src={"/cards/BACK.png"}
-                      alt="picture"
-                      width={200}
-                      height={100}
-                      key={0}
-                      onClick={hancleClickGameReStartBtn}
-                    />
-                  </div>
-                ) : (
-                  <div>
-                    <div>you win</div>
-                    <BasicButton
-                      buttonType="yellow"
-                      onClick={hancleClickGameStartBtn}
-                      mediaQueries="flex justify-center"
-                    >
-                      again
-                    </BasicButton>
-                  </div>
-                )}
+              <div className="flex justify-center">
+                <CardsField
+                  cards={speedTable.user.hand}
+                  handleClickCard={handleClickCard}
+                />
               </div>
+            </div>
+          )}
+
+          {speedTable.gamePhase == "acting" && (
+            <div className="flex justify-center h-10">
+              <BasicButton
+                buttonType="yellow"
+                onClick={hancleClickGameReStartBtn}
+                mediaQueries=""
+              >
+                restart
+              </BasicButton>
             </div>
           )}
         </div>

@@ -8,6 +8,7 @@ export const useSpeedState = (userName: string) => {
     new SpeedTable("userName")
   );
   const [selectedCard, setSelectedCard] = useState<CardOrNull>(null);
+
   const [cardsInStrages, setCardsInStrages] = useState<Card[]>([
     new Card("Joker", "Joker", false, "/cards/BACK.png"),
     new Card("Joker", "Joker", false, "/cards/BACK.png"),
@@ -25,6 +26,7 @@ export const useSpeedState = (userName: string) => {
       if (canPutInStrage(cardInStrages, selectedCard)) {
         setSpeedTable((table) => {
           const newTable: SpeedTable = _.cloneDeep(table);
+
           let newUserHand: Card[] = [];
 
           for (const card of newTable.user.hand) {
@@ -55,7 +57,7 @@ export const useSpeedState = (userName: string) => {
       const newTable: SpeedTable = _.cloneDeep(table);
       newTable.initTableForNewGame();
       newTable.assignPlayersHand();
-      // newTable.user.hand.splice(2, 23);
+
       newTable.gamePhase = "acting";
       setCardsInStrages((cardsInStrages: Card[]) => {
         const strages: Card[] = _.cloneDeep(cardsInStrages);
@@ -114,6 +116,7 @@ export const useSpeedState = (userName: string) => {
                 newHouseHand.push(card);
               }
               if (newHouseHand.length == 0) newTable.gamePhase = "roundOver";
+
               newTable.house.hand = newHouseHand;
 
               cardsInStrages[strageIndex] = candidateCard;

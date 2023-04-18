@@ -122,6 +122,8 @@ export class SpeedTable extends VanilaTable {
     this.deck.shuffleDeck();
     this._gamePhase = "roundOver";
     this._gameResult = "yetDecided";
+    this.house.hand = [];
+    this.user.hand = [];
   }
   public assignPlayersHand() {
     const deckCardLength = this.deck.cards.length;
