@@ -7,16 +7,19 @@ import { WarPlayerComponent } from "./WarPlayerComponent";
 import { WarPlayer } from "@/models/player/player";
 import { SelectedCardsComponent } from "./SelectedCardsComponent";
 
-type Props = {
+type CardsFieldProps = {
   table: WarTable;
+  handleClickCard: any;
 };
 
-export const WarTableComponent: FC<Props> = ({ table }) => {
+export const WarTableComponent: FC<CardsFieldProps> = (props) => {
+  const { table, handleClickCard } = props;
+
   return (
     <>
       <div className="relative h-[30%] w-full">
         <div className="absolute top-[50%] left-[10%] sm:left-[20%] md:left-[30%] lg:left-[40%]">
-          <CardsOverLap cards={table.cpu.hand} />
+          <CardsOverLap cards={table.cpu.hand} onClickCard={handleClickCard} />
         </div>
         <div className="absolute top-0 right-0">
           <WarPlayerComponent player={table.cpu} />
@@ -30,7 +33,7 @@ export const WarTableComponent: FC<Props> = ({ table }) => {
       </div>
       <div className="relative h-[30%] w-full">
         <div className="absolute top-[20%] left-[10%] sm:left-[20%] md:left-[30%] lg:left-[40%]">
-          <CardsOverLap cards={table.user.hand} onClickCard={() => {}} />
+          <CardsOverLap cards={table.user.hand} onClickCard={handleClickCard} />
         </div>
         <div className="absolute bottom-0 left-0">
           <WarPlayerComponent player={table.user} />
