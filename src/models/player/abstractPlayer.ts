@@ -101,7 +101,7 @@ export abstract class VanilaPlayer {
     return this._hand;
   }
 
-  protected set hand(v: Card[]) {
+  public set hand(v: Card[]) {
     this._hand = v;
   }
 
@@ -157,13 +157,13 @@ export abstract class ScoreGamePlayer extends VanilaPlayer {
   }
 
   // 引数のvalue分だけスコアを加算するメソッド
-  protected incrementScore(value: number) {
+  public incrementScore(value: number) {
     const cur = this.score;
     this.score = cur + value;
   }
 
   // 引数のvalue分だけスコアをマイナスするメソッド
-  protected decrementScore(value: number) {
+  public decrementScore(value: number) {
     const cur = this.score;
     this.score = cur - value;
   }

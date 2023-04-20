@@ -35,12 +35,9 @@ export class SpeedPlayer extends VanilaPlayer {
 // スコア制のゲームのプレイヤー(ギャンブルではないプレイヤー)
 
 export class WarPlayer extends ScoreGamePlayer {
-  _score: number;
-  _id: number;
-  _name: string;
+  _result: "Win" | "Lose" | "Draw" | "YetDecided" = "YetDecided";
   _playerType: "user" | "cpu";
   _playerStatus: string;
-  _hand: Card[];
   _selectedCard: Card | null = null;
   constructor(
     id: number,
@@ -51,28 +48,50 @@ export class WarPlayer extends ScoreGamePlayer {
   ) {
     super(id, name, hand, score);
     this._playerType = playerType;
+    this._playerStatus = "";
   }
 
+  // 初期化
   public initForNewGame() {
-    this.hand = [];
     this.score = 0;
+    this.selectedCard = null;
   }
 
   // ランダムにカードを取り出す
   public cpuSelectCard() {
-    return this.hand.splice(Math.floor(Math.random() * 26));
+    const index = Math.floor(Math.random() * 26);
+    const card = this.hand[index];
+    this.hand.splice(index, 1);
+    this.selectedCard = card;
   }
 
   // 特定のインデックスのカードを取り出す
   public userSelectCard(index: number) {
-    return this.hand.splice(index, 1);
+    const card = this.hand[index];
+    this.hand.splice(index, 1);
+    this.selectedCard = card;
   }
 
-  public get selectedCard(): Card {
-    return this.selectedCard;
+  public get selectedCard(): Card | null {
+    return this._selectedCard;
   }
-  public set selectedCard(card: Card) {
-    this.selectedCard = card;
+  public set selectedCard(card: Card | null) {
+    this._selectedCard = card;
+  }
+  get playerType(): string {
+    throw new Error("Method not implemented.");
+  }
+  get playerStatus(): string {
+    throw new Error("Method not implemented.");
+  }
+  set playerStatus(v: string) {
+    throw new Error("Method not implemented.");
+  }
+  set result(v: string) {
+    throw new Error("Method not implemented.");
+  }
+  get result(): string {
+    throw new Error("Method not implemented.");
   }
 }
 
