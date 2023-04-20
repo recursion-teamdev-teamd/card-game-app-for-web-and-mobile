@@ -8,8 +8,45 @@ import Image from "next/image";
 import { v4 } from "uuid";
 import ReactDOM from "react-dom";
 import Modal from "react-modal";
-type CardsFieldProps = { cards: Card[]; handleClickCard };
+import { useCustomMediaQuery } from "@/hooks/common/useCustomMediaQuery";
 
+function useWidthAndHeight() {
+  const { isMoreThanSm, isMoreThanMd, isMoreThanLg, isMoreThanXl } =
+    useCustomMediaQuery();
+
+  let width = 50;
+  if (isMoreThanMd) width = 100;
+  let height = width * 1.5;
+  return { width, height };
+}
+
+type CardComponentProps = {
+  card: Card;
+  onClick: () => void;
+};
+
+const CardComponent: React.FC<CardComponentProps> = (props) => {
+  const { card, onClick } = props;
+
+  const { isMoreThanSm, isMoreThanMd, isMoreThanLg, isMoreThanXl } =
+    useCustomMediaQuery();
+  let width = 50;
+  if (isMoreThanMd) width = 100;
+  let height = width * 1.5;
+
+  return (
+    <Image
+      src={card.imgUrl}
+      alt="picture"
+      width={width}
+      height={height}
+      onClick={onClick}
+      className="m-5 py-3"
+    />
+  );
+};
+
+type CardsFieldProps = { cards: Card[]; handleClickCard };
 const CardsField: React.FC<CardsFieldProps> = (props) => {
   const { cards, handleClickCard } = props;
   const hiddenImgUrl: string = "/cards/BACK.png";
@@ -18,30 +55,18 @@ const CardsField: React.FC<CardsFieldProps> = (props) => {
     if (cards && cards.length - 1 >= index) toRenderCards.push(cards[index]);
   }
 
+  const { width, height } = useWidthAndHeight();
+
   return (
     <>
       {toRenderCards.map((card) => {
         if (!card) return;
         const key: string = v4().toString();
-        return card.isOpen ? (
-          <Image
-            src={card.imgUrl}
-            alt="picture"
-            width={100}
-            height={150}
-            key={key}
+        return (
+          <CardComponent
+            card={card}
             onClick={() => handleClickCard(card)}
-            className="m-5 py-3"
-          />
-        ) : (
-          <Image
-            src={hiddenImgUrl}
-            alt="picture"
-            width={100}
-            height={10}
             key={key}
-            onClick={() => handleClickCard(card)}
-            className="m-5 py-3"
           />
         );
       })}
@@ -57,27 +82,15 @@ type StrageFieldProps = {
 const StrageField: React.FC<StrageFieldProps> = (props) => {
   const { cardsInStrages, handleClickCardInStrages } = props;
   const hiddenImgUrl: string = "/cards/BACK.png";
+  const { width, height } = useWidthAndHeight();
 
   return (
     <>
       {cardsInStrages.map((card: Card, index: number) => {
         const key: string = v4().toString();
-        return card.isOpen ? (
-          <Image
-            src={card.imgUrl}
-            alt="picture"
-            width={100}
-            height={150}
-            key={key}
-            onClick={() => handleClickCardInStrages(index, card)}
-            className="mx-5"
-          />
-        ) : (
-          <Image
-            src={hiddenImgUrl}
-            alt="picture"
-            width={100}
-            height={150}
+        return (
+          <CardComponent
+            card={card}
             key={key}
             onClick={() => handleClickCardInStrages(index, card)}
           />
@@ -112,6 +125,7 @@ export const SpeedTableComponent: React.FC<SpeedTableComponentProps> = (
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
+    if (speedTable.gamePhase == "firstRound") hancleClickGameStartBtn();
     const houseActionInterval = setInterval(() => {
       executeHouseAction();
     }, 3000);
@@ -144,17 +158,7 @@ export const SpeedTableComponent: React.FC<SpeedTableComponentProps> = (
   return (
     <>
       <div className="flex  justify-center">
-        {speedTable.gamePhase == "firstRound" && (
-          <BasicButton
-            buttonType="yellow"
-            onClick={hancleClickGameStartBtn}
-            mediaQueries="flex justify-center "
-          >
-            gamestart
-          </BasicButton>
-        )}
-
-        <div className="flex grid grid-rows-4  gap-4">
+        <div className="flex grid grid-rows-4 gap-4">
           <Modal
             isOpen={isModalOpen}
             contentLabel="again btn modal"
