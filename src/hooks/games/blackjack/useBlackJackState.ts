@@ -1,8 +1,9 @@
+import { BlackjackTable } from "./../../../models/table/blackjackTable";
 import { BlackjackGamePhase } from "./../../../models/gamePhase/gamePhase";
 import { useCallback } from "react";
 
 import { useState } from "react";
-import { BlackjackTable } from "@/models/table/table";
+
 import { HandleBlackjackUserAction } from "@/components/games/blackjack/BlackjackActionSelectingArea";
 
 export const useBlackJackState = () => {

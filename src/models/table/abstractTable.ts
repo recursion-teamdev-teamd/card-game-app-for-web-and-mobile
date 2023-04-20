@@ -23,6 +23,10 @@ export abstract class VanilaTable {
     this._deck = deck;
   }
 
+  public setUserName(name: string) {
+    this._user.name = name;
+  }
+
   abstract assignPlayersHand(): void;
 
   protected abstract get user(): VanilaPlayer;
@@ -62,7 +66,12 @@ export abstract class TurnGameTable extends VanilaTable {
   }
 
   // turnCounterが指すプレイヤーを返す
-  abstract getPlayerOnTurn(): VanilaPlayer;
+  // abstract getPlayerOnTurn(): VanilaPlayer;
+
+  // ランダムにターンカウンターをセットする
+  public setTurnCounterRandomly() {
+    this.turnCounter = Math.floor(Math.random() * this.players.length);
+  }
 
   // 順番の先頭かをbooleanで返す
   public isOnTheTopPlayer(): boolean {

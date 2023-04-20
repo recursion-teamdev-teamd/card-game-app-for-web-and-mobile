@@ -2,6 +2,7 @@ export class PlayerStatus {
   static readonly roundOver: string = "roundOver";
 }
 
+
 export type BlackjackPlayerStatus =
   | "Waiting"
   | "Playing"
