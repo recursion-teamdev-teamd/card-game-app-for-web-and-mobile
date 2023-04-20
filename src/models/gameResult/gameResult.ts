@@ -29,3 +29,5 @@ export type BlackjackGameResult =
   | "Draw"
   | "YetDecided"
   | "Game Over";
+
+export type SpeedGameResult = "win" | "lose" | "yetDecided";

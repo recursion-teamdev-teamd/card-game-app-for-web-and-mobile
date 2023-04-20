@@ -1,6 +1,29 @@
-import Head from 'next/head'
+import Head from "next/head";
+import { useEffect } from "react";
+import { SpeedTable } from "@/models/table/table";
+import { SpeedPage } from "@/components/page/SpeedPage";
+import { useSpeedState } from "@/hooks/games/speed/useSpeedState";
 
 export default function Speed() {
+  const {
+    speedTable,
+    handleClickCard,
+    cardsInStrages,
+    handleClickCardInStrages,
+    hancleClickGameStartBtn,
+    hancleClickGameReStartBtn,
+    executeHouseAction,
+  } = useSpeedState("username");
+
+  const SpeedPageProps = {
+    speedTable,
+    handleClickCard,
+    cardsInStrages,
+    handleClickCardInStrages,
+    hancleClickGameStartBtn,
+    hancleClickGameReStartBtn,
+    executeHouseAction,
+  };
   return (
     <>
       <Head>
@@ -10,8 +33,8 @@ export default function Speed() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>
-        <p>Speed</p>
+        <SpeedPage {...SpeedPageProps} />
       </div>
     </>
-  )
+  );
 }
