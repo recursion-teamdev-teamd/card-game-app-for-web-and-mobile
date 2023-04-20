@@ -1,7 +1,8 @@
 import { FC } from "react";
 import React from "react";
-import { BlackjackTable } from "@/models/table/table";
+
 import { GamblePlayerComponent } from "@/components/common/player/GamblePlayerComponent";
+import { BlackjackTable } from "@/models/table/blackjackTable";
 
 type Props = {
   table: BlackjackTable;

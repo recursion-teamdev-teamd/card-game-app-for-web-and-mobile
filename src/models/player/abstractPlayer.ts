@@ -11,6 +11,58 @@ export abstract class VanilaPlayer {
   protected abstract _result: string;
   protected abstract _playerStatus: string;
   protected abstract readonly _playerType: string;
+  static cpuNamePatterns = [
+    "John",
+    "Jane",
+    "Michael",
+    "Emma",
+    "William",
+    "Olivia",
+    "James",
+    "Sophia",
+    "Benjamin",
+    "Isabella",
+    "Lucas",
+    "Mia",
+    "Henry",
+    "Charlotte",
+    "Alexander",
+    "Amelia",
+    "Sebastian",
+    "Harper",
+    "Ethan",
+    "Evelyn",
+    "Daniel",
+    "Abigail",
+    "Matthew",
+    "Emily",
+    "Joseph",
+    "Elizabeth",
+    "David",
+    "Sofia",
+    "Jackson",
+    "Avery",
+    "Samuel",
+    "Ella",
+    "Gabriel",
+    "Scarlett",
+    "Carter",
+    "Grace",
+    "Luke",
+    "Chloe",
+    "Anthony",
+    "Victoria",
+    "Isaac",
+    "Riley",
+    "Dylan",
+    "Madison",
+    "Leo",
+    "Zoe",
+    "Max",
+    "Lily",
+    "Nathan",
+    "Hannah",
+  ];
 
   constructor(id: number, name: string, hand: Card[]) {
     this._id = id;
@@ -62,6 +114,24 @@ export abstract class VanilaPlayer {
     this._hand.splice(index, 1);
   }
 
+  public getACardFromHand(index: number) {
+    return this._hand[index];
+  }
+
+  public popACardFromHand(index: number) {
+    const card = this.getACardFromHand(index);
+    this.removeACardFromHand(index);
+    return card;
+  }
+  // sort
+  public sortHand() {
+    Card.sortCards(this.hand);
+  }
+
+  public resetHand() {
+    this.hand = [];
+  }
+
   //  ↑手札関連のメソッドここまで　//
 
   // abstract get playerStatus()
@@ -100,6 +170,10 @@ export abstract class ScoreGamePlayer extends VanilaPlayer {
   // 引数のvalue分マイナスできるか（０以下にならないか）
   protected isAbleToDecrementScore(value: number): boolean {
     return this.score >= value;
+  }
+
+  public resetScoreToZero() {
+    this._score = 0;
   }
 }
 

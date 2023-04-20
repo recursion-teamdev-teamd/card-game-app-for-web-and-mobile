@@ -50,7 +50,7 @@ export const gameInfoRummy: GameInfo = {
   playerNum: 4,
   isCardOpen: false,
   jokerNum: 0,
-  initialHand: 26,
+  initialHand: 7,
   initialHouseHand: 0,
   pathname: "/rummy",
 };
