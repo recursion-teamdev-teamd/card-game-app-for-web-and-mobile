@@ -6,7 +6,6 @@ import { Card } from "@/models/card/card";
 import { BasicButton } from "@/components/common/ui/atoms/buttons/BasicButton";
 import Image from "next/image";
 import { v4 } from "uuid";
-import ReactDOM from "react-dom";
 import Modal from "react-modal";
 import { useCustomMediaQuery } from "@/hooks/common/useCustomMediaQuery";
 

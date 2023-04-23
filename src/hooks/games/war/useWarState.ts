@@ -1,72 +1,75 @@
+import { WarGamePhase } from "./../../../models/gamePhase/gamePhase";
 import { Card } from "@/models/card/card";
-import { WarPlayer } from "@/models/player/player";
-import { WarTable } from "@/models/table/table";
+
 import React, { useCallback, useState } from "react";
-// import _ from "lodash";
+import _ from "lodash";
+import { WarTable } from "@/models/table/warTable";
 
 export const useWarState = () => {
-  type CardOrNull = Card | null;
-  const [warTable, setWarTable] = useState<WarTable>(new WarTable());
-  const [cpu, setCpu] = useState<WarPlayer>(
-    new WarPlayer(0, "CPU", "cpu", [], 0)
-  );
-  const [user, setUser] = useState<WarPlayer>(
-    new WarPlayer(0, "YOU", "user", [], 0)
-  );
-  const [selectedCard, setSelectedCard] = useState<CardOrNull>(null);
-  const [cardsInStrage, setCardsInStrage] = useState<Card[]>([]);
+  const [table, setTable] = useState(new WarTable());
+  const [gamePhase, setGamePhase] = useState<WarGamePhase>("Selection");
+
+  // const [selectedCard, setSelectedCard] = useState<CardOrNull>(null);
+  // const [cardsInStrage, setCardsInStrage] = useState<Card[]>([]);
 
   const handleOnFirstLogin = useCallback((userName: string) => {
-    setWarTable((WarTable) => {
-      WarTable.setUserName(userName);
-      WarTable.initForNewGame();
-      WarTable.splitHalfOfDeck();
-      return WarTable;
+    setTable((table) => {
+      const newTable = _.cloneDeep(table);
+      newTable.setUserName(userName);
+      newTable.initForNewGame();
+      return newTable;
     });
   }, []);
 
-  const handleClickCard = (card: Card) => {
-    setSelectedCard(card);
+  const handleClickCard = (index: number) => {
+    setTable((table) => {
+      const newTable = _.cloneDeep(table);
+      newTable.playersSelectCard(index);
+      return newTable;
+    });
+    setGamePhase("Comparison");
+    setTimeout(() => {
+      cardComparison();
+    }, 1000);
   };
 
-  const handleClickCardInStrages = (
-    strageIndex: number,
-    cardsInStrages: Card
-  ) => {
-    setSelectedCard((selectedCard) => {
-      setWarTable((table) => {
-        // const newTable: WarTable = _.cloneDeep(table);
-        let newUserHand: Card[] = [];
-
-        for (const card of table.user.hand) {
-          if (
-            card.rank === selectedCard!.rank &&
-            card.suit === selectedCard!.suit
-          )
-            continue;
-          newUserHand.push(card);
-        }
-        if (newUserHand.length === 0) table.gamePhase = "roundOver";
-
-        table.user.hand = newUserHand;
-        return table;
-      });
-
-      setCardsInStrage((cardsInStrages: Card[]) => {
-        cardsInStrages[strageIndex] = selectedCard!;
-        return cardsInStrages;
-      });
-      return null;
+  const cardComparison = () => {
+    setTable((table) => {
+      const newTable = _.cloneDeep(table);
+      newTable.compareCard();
+      return newTable;
     });
   };
 
+  const checkIfGameIsOver = () => {
+    console.log(table.isGameOver());
+    if (table.isGameOver()) {
+      setGamePhase("Result");
+      setTable((table) => {
+        const newTable = _.cloneDeep(table);
+        newTable.setResult();
+        return newTable;
+      });
+    } else {
+      setGamePhase("Selection");
+    }
+  };
+
+  const handleClickNextGame = () => {
+    setTable((table) => {
+      const newTable = _.cloneDeep(table);
+      newTable.initForNewGame();
+      return newTable;
+    });
+    setGamePhase("Selection");
+  };
+
   return {
-    warTable,
-    selectedCard,
-    cardsInStrage,
+    table,
     handleOnFirstLogin,
     handleClickCard,
-    setSelectedCard,
-    handleClickCardInStrages,
+    gamePhase,
+    handleClickNextGame,
+    checkIfGameIsOver,
   };
 };

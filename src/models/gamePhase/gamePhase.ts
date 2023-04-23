@@ -25,4 +25,6 @@ export type BlackjackGamePhase =
   | "HouseAction"
   | "Result";
 
+export type WarGamePhase = "Selection" | "Comparison" | "Result";
+
 export type SpeedGamePhase = "roundOver" | "acting" | "firstRound";
