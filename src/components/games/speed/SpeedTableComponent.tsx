@@ -1,5 +1,5 @@
 import React from "react";
-import { SpeedTable } from "@/models/table/table";
+
 import { useState, useEffect } from "react";
 import _ from "lodash";
 import { Card } from "@/models/card/card";
@@ -8,6 +8,7 @@ import Image from "next/image";
 import { v4 } from "uuid";
 import Modal from "react-modal";
 import { useCustomMediaQuery } from "@/hooks/common/useCustomMediaQuery";
+import { SpeedTable } from "@/models/table/speedTable";
 
 function useWidthAndHeight() {
   const { isMoreThanSm, isMoreThanMd, isMoreThanLg, isMoreThanXl } =
@@ -45,7 +46,7 @@ const CardComponent: React.FC<CardComponentProps> = (props) => {
   );
 };
 
-type CardsFieldProps = { cards: Card[]; handleClickCard };
+type CardsFieldProps = { cards: Card[]; handleClickCard: (card: Card) => void };
 const CardsField: React.FC<CardsFieldProps> = (props) => {
   const { cards, handleClickCard } = props;
   const hiddenImgUrl: string = "/cards/BACK.png";
@@ -74,8 +75,8 @@ const CardsField: React.FC<CardsFieldProps> = (props) => {
 };
 
 type StrageFieldProps = {
-  cardsInStrages;
-  handleClickCardInStrages;
+  cardsInStrages: Card[];
+  handleClickCardInStrages: (index: number, card: Card) => void;
 };
 
 const StrageField: React.FC<StrageFieldProps> = (props) => {
@@ -99,13 +100,13 @@ const StrageField: React.FC<StrageFieldProps> = (props) => {
   );
 };
 type SpeedTableComponentProps = {
-  speedTable;
-  handleClickCard;
-  cardsInStrages;
-  handleClickCardInStrages;
-  hancleClickGameStartBtn;
-  hancleClickGameReStartBtn;
-  executeHouseAction;
+  speedTable: SpeedTable;
+  handleClickCard: (card: Card) => void;
+  cardsInStrages: Card[];
+  handleClickCardInStrages: (index: number, card: Card) => void;
+  hancleClickGameStartBtn: () => void;
+  hancleClickGameReStartBtn: () => void;
+  executeHouseAction: () => void;
 };
 
 export const SpeedTableComponent: React.FC<SpeedTableComponentProps> = (
@@ -163,14 +164,16 @@ export const SpeedTableComponent: React.FC<SpeedTableComponentProps> = (
             contentLabel="again btn modal"
             style={customStyles}
           >
-            <button
+            <BasicButton
+              buttonType="blue"
+              mediaQueries="p-4"
               onClick={() => {
                 setIsModalOpen(false);
                 hancleClickGameStartBtn();
               }}
             >
               next game
-            </button>
+            </BasicButton>
           </Modal>
 
           {(speedTable.gamePhase == "acting" ||
@@ -202,11 +205,11 @@ export const SpeedTableComponent: React.FC<SpeedTableComponentProps> = (
           )}
 
           {speedTable.gamePhase == "acting" && (
-            <div className="flex justify-center h-10">
+            <div className="flex justify-center h-12">
               <BasicButton
-                buttonType="yellow"
+                buttonType="blue"
                 onClick={hancleClickGameReStartBtn}
-                mediaQueries=""
+                mediaQueries="p-4"
               >
                 restart
               </BasicButton>

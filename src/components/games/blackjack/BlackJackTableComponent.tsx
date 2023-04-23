@@ -3,6 +3,7 @@ import React from "react";
 
 import { GamblePlayerComponent } from "@/components/common/player/GamblePlayerComponent";
 import { BlackjackTable } from "@/models/table/blackjackTable";
+import { useCustomMediaQuery } from "@/hooks/common/useCustomMediaQuery";
 
 type Props = {
   table: BlackjackTable;
@@ -10,7 +11,7 @@ type Props = {
 
 export const BlackJackTableComponent: FC<Props> = ({ table }) => {
   return (
-    <>
+    <div className="xl:relative">
       <div className="flex justify-center">
         <GamblePlayerComponent player={table.house} />
       </div>
@@ -20,9 +21,9 @@ export const BlackJackTableComponent: FC<Props> = ({ table }) => {
             return <GamblePlayerComponent player={player} key={player.name} />;
         })}
       </div>
-      <div className="flex justify-center">
+      <div className="flex justify-center xl:absolute xl:top-[43%] xl:left-[42%]">
         <GamblePlayerComponent player={table.user} />
       </div>
-    </>
+    </div>
   );
 };

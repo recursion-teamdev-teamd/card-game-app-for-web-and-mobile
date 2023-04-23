@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Card } from "@/models/card/card";
-import { SpeedTable } from "@/models/table/table";
+
 import _ from "lodash";
+import { SpeedTable } from "@/models/table/speedTable";
 export const useSpeedState = (userName: string) => {
   type CardOrNull = Card | null;
   const [speedTable, setSpeedTable] = useState<SpeedTable>(

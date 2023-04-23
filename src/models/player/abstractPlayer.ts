@@ -10,7 +10,7 @@ export abstract class VanilaPlayer {
   private _hand: Card[];
   protected abstract _result: string;
   protected abstract _playerStatus: string;
-  protected abstract readonly _playerType: string;
+  protected abstract _playerType: string;
   static cpuNamePatterns = [
     "John",
     "Jane",

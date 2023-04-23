@@ -9,9 +9,7 @@ export default function TexasHoldemPoker() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div>
-        <p>Texas hold</p>
-      </div>
+      <div>game</div>
     </>
   );
 }
