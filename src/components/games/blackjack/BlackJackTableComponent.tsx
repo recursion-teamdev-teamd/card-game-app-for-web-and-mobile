@@ -15,7 +15,7 @@ export const BlackJackTableComponent: FC<Props> = ({ table }) => {
       <div className="flex justify-center">
         <GamblePlayerComponent player={table.house} />
       </div>
-      <div className="w-full flex justify-between xl:justify-evenly px-3">
+      <div className="w-full flex justify-between px-3">
         {table.players.map((player) => {
           if (player.playerType === "AI")
             return <GamblePlayerComponent player={player} key={player.name} />;
