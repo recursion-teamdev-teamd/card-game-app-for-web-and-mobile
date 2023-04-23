@@ -2,11 +2,10 @@ import { VanilaGameResult } from "./../gameResult/gameResult";
 import { VanilaPlayerType } from "./../playerType/playerType";
 import { Card } from "@/models/card/card";
 import { ScoreGamePlayer } from "./abstractPlayer";
-import { VanilaPlayerStatus } from "../playerStatus/playerStatus";
 
 export class RummyPlayer extends ScoreGamePlayer {
   protected _result: VanilaGameResult = "YetDecided";
-  protected _playerStatus: VanilaPlayerStatus = "Playing";
+  protected _playerStatus: string = "Playing";
   protected _playerType: VanilaPlayerType;
 
   constructor(
@@ -41,10 +40,10 @@ export class RummyPlayer extends ScoreGamePlayer {
   get playerType(): VanilaPlayerType {
     return this._playerType;
   }
-  get playerStatus(): VanilaPlayerStatus {
+  get playerStatus(): string {
     return this._playerStatus;
   }
-  protected set playerStatus(v: VanilaPlayerStatus) {
+  protected set playerStatus(v: string) {
     this.playerStatus = v;
   }
   public set result(v: VanilaGameResult) {
