@@ -1,25 +1,38 @@
-import { Card } from "@/models/card/card";
-import React, { useEffect, useState } from "react";
-import { CardComponent } from "../common/card/CardComponent";
-import { CardsOverLap } from "../common/card/CardsOverLap";
-import { WarPlayerComponent } from "../games/war/WarPlayerComponent";
+import React, { useEffect } from "react";
 import { GamePageLayout } from "../common/ui/layout/GamePageLayout";
 import { WarTableComponent } from "../games/war/WarTableComponent";
-import { WarTable } from "@/models/table/table";
+
+import { useWarState } from "@/hooks/games/war/useWarState";
+import { useRecoilValue } from "recoil";
+import { userState } from "@/globalState/userState";
 
 export const WarPage = () => {
-  const [table, setTable] = useState(new WarTable());
+  const {
+    table,
+    gamePhase,
+    handleOnFirstLogin,
+    handleClickCard,
+    handleClickNextGame,
+    checkIfGameIsOver,
+  } = useWarState();
+  const { userName } = useRecoilValue(userState);
 
   useEffect(() => {
-    setTable((table) => {
-      table.initForNewGame();
-      return table;
-    });
+    handleOnFirstLogin(userName);
   }, []);
+
+  useEffect(() => {
+    checkIfGameIsOver();
+  }, [gamePhase]);
 
   return (
     <GamePageLayout>
-      <WarTableComponent table={table} />
+      <WarTableComponent
+        table={table}
+        handleClickCard={handleClickCard}
+        gamePhase={gamePhase}
+        handleClickNextGame={handleClickNextGame}
+      />
     </GamePageLayout>
   );
 };

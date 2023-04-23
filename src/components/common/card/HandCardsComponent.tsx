@@ -5,13 +5,13 @@ import { DisabledCardComponent } from "./DisabledCardComponent";
 
 type Props = {
   cards: Card[];
-  onClickCard?: (data?: any) => void;
+  handleClickCard?: (index: number) => void;
   disable: boolean;
 };
 
 export const HandCardsComponent: FC<Props> = ({
   cards,
-  onClickCard,
+  handleClickCard,
   disable,
 }) => {
   const baseStyle = disable
@@ -26,7 +26,10 @@ export const HandCardsComponent: FC<Props> = ({
             {disable ? (
               <DisabledCardComponent card={card} />
             ) : (
-              <CardComponent card={card} onClick={onClickCard} />
+              <CardComponent
+                card={card}
+                onClick={() => handleClickCard && handleClickCard(i)}
+              />
             )}
           </div>
         ) : (
@@ -34,7 +37,10 @@ export const HandCardsComponent: FC<Props> = ({
             {disable ? (
               <DisabledCardComponent card={card} />
             ) : (
-              <CardComponent card={card} onClick={onClickCard} />
+              <CardComponent
+                card={card}
+                onClick={() => handleClickCard && handleClickCard(i)}
+              />
             )}
           </div>
         );
