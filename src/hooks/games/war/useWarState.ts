@@ -30,7 +30,7 @@ export const useWarState = () => {
     setGamePhase("Comparison");
     setTimeout(() => {
       cardComparison();
-    }, 1000);
+    }, 3000);
   };
 
   const cardComparison = () => {
