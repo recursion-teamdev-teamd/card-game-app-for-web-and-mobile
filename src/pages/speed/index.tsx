@@ -1,6 +1,5 @@
 import Head from "next/head";
 import { useEffect } from "react";
-import { SpeedTable } from "@/models/table/table";
 import { SpeedPage } from "@/components/page/SpeedPage";
 import { useSpeedState } from "@/hooks/games/speed/useSpeedState";
 
