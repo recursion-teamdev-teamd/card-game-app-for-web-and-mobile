@@ -1,26 +1,9 @@
-import { SpeedPlayer } from "./../player/player";
-import { WarPlayer } from "@/models/player/player";
-import { VanilaPlayer } from "@/models/player/abstractPlayer";
-import {
-  gameInfoWar,
-  gameInfoBlackJack,
-  gameInfoSpeed,
-} from "./../gameInfo/gameInfo";
-import { BlackjackGameResult } from "../gameResult/gameResult";
-import { BlackjackGamePhase, GambleGamePhase } from "../gamePhase/gamePhase";
-import { SpeedGamePhase } from "../gamePhase/gamePhase";
-import { SpeedGameResult } from "../gameResult/gameResult";
-import { Deck } from "../deck/deck";
-import { GameInfo } from "../gameInfo/gameInfo";
-
-import {
-  AbstractPokerTable,
-  GambleTable,
-  VanilaTable,
-  TurnGameTable,
-} from "./abstractTable";
-
-import { Card } from "../card/card";
+import { SpeedGameResult } from "./../gameResult/gameResult";
+import { SpeedGamePhase } from "./../gamePhase/gamePhase";
+import { Deck } from "./../deck/deck";
+import { SpeedPlayer } from "./../player/speedPlayer";
+import { GameInfo, gameInfoSpeed } from "./../gameInfo/gameInfo";
+import { VanilaTable } from "./abstractTable";
 
 export class SpeedTable extends VanilaTable {
   public get gameResult(): string {
@@ -104,8 +87,3 @@ export class SpeedTable extends VanilaTable {
     this._user = v;
   }
 }
-
-// // ポーカー系のゲーム
-// export class PokerTable extends AbstractPokerTable {}
-
-// export class TexasPokerTable extends AbstractPokerTable {}

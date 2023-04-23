@@ -12,6 +12,7 @@ export interface GameInfo {
   readonly jokerNum: number;
   readonly initialHand: number;
   readonly initialHouseHand: number;
+  readonly isPublic: boolean;
 }
 // ブラックジャック
 export const gameInfoBlackJack: GameInfo = {
@@ -26,6 +27,7 @@ export const gameInfoBlackJack: GameInfo = {
   initialHand: 2,
   initialHouseHand: 1,
   pathname: "/blackjack",
+  isPublic: true,
 };
 
 export const gameInfoWar: GameInfo = {
@@ -39,6 +41,7 @@ export const gameInfoWar: GameInfo = {
   initialHand: 26,
   initialHouseHand: 0,
   pathname: "/war",
+  isPublic: true,
 };
 
 export const gameInfoRummy: GameInfo = {
@@ -53,6 +56,7 @@ export const gameInfoRummy: GameInfo = {
   initialHand: 7,
   initialHouseHand: 0,
   pathname: "/rummy",
+  isPublic: false,
 };
 
 export const gameInfoSpeed: GameInfo = {
@@ -67,6 +71,7 @@ export const gameInfoSpeed: GameInfo = {
   initialHand: 26,
   initialHouseHand: 0,
   pathname: "/speed",
+  isPublic: true,
 };
 
 export const gameInfoPoker: GameInfo = {
@@ -81,6 +86,7 @@ export const gameInfoPoker: GameInfo = {
   initialHand: 26,
   initialHouseHand: 0,
   pathname: "/poker",
+  isPublic: false,
 };
 
 export const gameInfoTexasHoldemPoker: GameInfo = {
@@ -95,6 +101,7 @@ export const gameInfoTexasHoldemPoker: GameInfo = {
   initialHand: 26,
   initialHouseHand: 0,
   pathname: "/texasHold'emPoker",
+  isPublic: false,
 };
 
 //   ゲームの情報を

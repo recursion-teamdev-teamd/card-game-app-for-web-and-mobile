@@ -1,17 +1,11 @@
 import React from "react";
 import { GamePageLayout } from "../common/ui/layout/GamePageLayout";
-import { SpeedTableComponent } from "../games/speed/SpeedTableComponent";
+import {
+  SpeedTableComponent,
+  SpeedTableComponentProps,
+} from "../games/speed/SpeedTableComponent";
 
-type Props = {
-  speedTable;
-  handleClickCard;
-  cardsInStrages;
-  handleClickCardInStrages;
-  hancleClickGameStartBtn;
-  hancleClickGameReStartBtn;
-  executeHouseAction;
-};
-export const SpeedPage: React.FC<Props> = (props) => {
+export const SpeedPage: React.FC<SpeedTableComponentProps> = (props) => {
   const {
     speedTable,
     handleClickCard,

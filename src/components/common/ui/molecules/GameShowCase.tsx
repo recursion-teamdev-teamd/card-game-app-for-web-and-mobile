@@ -40,13 +40,23 @@ export const GameShowCase: FC<Props> = ({ gameInfo, userName }) => {
       </div>
 
       <div className="flex justify-center py-4 space-x-2">
-        <BasicButton
-          buttonType="blue"
-          mediaQueries="p-2"
-          onClick={() => handleClickGameStartBtn()}
-        >
-          Start
-        </BasicButton>
+        {gameInfo.isPublic ? (
+          <BasicButton
+            buttonType="blue"
+            mediaQueries="p-2"
+            onClick={() => handleClickGameStartBtn()}
+          >
+            Start
+          </BasicButton>
+        ) : (
+          <BasicButton
+            buttonType="black"
+            mediaQueries="p-2"
+            onClick={() => router.push("/")}
+          >
+            製作中...
+          </BasicButton>
+        )}
 
         {/* <BasicButton buttonType="blue" mediaQueries="p-2" onClick={() => {}}>
           easy
