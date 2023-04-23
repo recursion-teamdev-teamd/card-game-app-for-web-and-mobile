@@ -21,7 +21,7 @@ export const BlackJackTableComponent: FC<Props> = ({ table }) => {
             return <GamblePlayerComponent player={player} key={player.name} />;
         })}
       </div>
-      <div className="flex justify-center xl:absolute xl:top-[43%] xl:left-[42%]">
+      <div className="flex justify-center xl:absolute xl:top-[46%] xl:left-[42%]">
         <GamblePlayerComponent player={table.user} />
       </div>
     </div>
