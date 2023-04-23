@@ -99,7 +99,7 @@ const StrageField: React.FC<StrageFieldProps> = (props) => {
     </>
   );
 };
-type SpeedTableComponentProps = {
+export type SpeedTableComponentProps = {
   speedTable: SpeedTable;
   handleClickCard: (card: Card) => void;
   cardsInStrages: Card[];
